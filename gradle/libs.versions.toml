@@ -13,6 +13,8 @@ retrofitVersion = "2.9.0"
 converterGsonVersion = "2.9.0"
 javaxInject = "1"
 navigationCompose = "2.5.3"
+coilComposeVersion = "2.3.0"
+
 
 
 
@@ -32,6 +34,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 converterGson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 
 
 [plugins]
