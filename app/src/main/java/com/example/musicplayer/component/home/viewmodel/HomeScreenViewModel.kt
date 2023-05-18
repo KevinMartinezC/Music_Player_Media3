@@ -3,8 +3,11 @@ package com.example.musicplayer.component.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.SoundResult
 import com.example.domain.usecases.SearchUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,16 +16,17 @@ class HomeScreenViewModel @Inject constructor(
     private val searchUseCase: SearchUseCase
 ) : ViewModel(){
 
+    private val _searchResults = MutableStateFlow<List<SoundResult>?>(null)
+    val searchResults: StateFlow<List<SoundResult>?> = _searchResults
+
     fun search(query: String) {
         viewModelScope.launch {
             try {
-                Log.wtf("SoundViewModel", "Starting search for query: $query")
                 val result = searchUseCase.execute(query)
-                Log.wtf("SoundViewModel", "Results: $result")
+                _searchResults.emit(result)
             } catch (e: Exception) {
                 Log.wtf("SoundViewModel", "API Error: ${e.message}")
             }
         }
     }
-
 }
