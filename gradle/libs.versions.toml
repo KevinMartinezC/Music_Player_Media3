@@ -12,6 +12,8 @@ runner = "1.0.2"
 retrofitVersion = "2.9.0"
 converterGsonVersion = "2.9.0"
 javaxInject = "1"
+navigationCompose = "2.5.3"
+
 
 
 [libraries]
@@ -29,6 +31,7 @@ runner = { module = "com.android.support.test:runner", version.ref = "runner" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 converterGson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
 
 [plugins]
