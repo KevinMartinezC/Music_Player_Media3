@@ -7,8 +7,10 @@ hiltAndroid = "2.44"
 hiltNavigationCompose = "1.0.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
-lifecycleRuntimeKtx = "2.6.1"
+lifecycleRuntimeKtx = "2.5.1"
 runner = "1.0.2"
+retrofitVersion = "2.9.0"
+converterGsonVersion = "2.9.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -22,6 +24,8 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 junit = { module = "junit:junit", version.ref = "junit" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 runner = { module = "com.android.support.test:runner", version.ref = "runner" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+converterGson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
 
 [plugins]
 

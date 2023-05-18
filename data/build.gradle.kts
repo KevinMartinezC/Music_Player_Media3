@@ -40,6 +40,8 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.bundles.hilt)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.retrofit)
+    implementation(libs.converterGson)
 }
 
 kapt {
