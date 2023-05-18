@@ -44,13 +44,4 @@ object NetworkModule {
     @Singleton
     fun provideMyApiService(retrofit: Retrofit): MyApiService = retrofit.create(MyApiService::class.java)
 
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object RepositoryModule {
-        @Provides
-        @Singleton
-        fun provideSoundRepository(apiService: MyApiService): SoundRepository = SoundRepositoryImpl(apiService)
-    }
-
 }

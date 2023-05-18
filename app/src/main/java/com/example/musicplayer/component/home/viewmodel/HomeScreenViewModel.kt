@@ -32,6 +32,7 @@ class HomeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val result = searchUseCase.execute(query)
+                Log.wtf("RESULT", "${result}")
                 _searchResults.emit(result)
             } catch (e: Exception) {
                 Log.wtf("SoundViewModel", "API Error: ${e.message}")
