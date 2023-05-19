@@ -9,6 +9,15 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 lifecycleRuntimeKtx = "2.6.1"
 runner = "1.0.2"
+retrofitVersion = "2.9.0"
+converterGsonVersion = "2.9.0"
+javaxInject = "1"
+navigationCompose = "2.5.3"
+coilComposeVersion = "2.3.0"
+pagingCompose = "1.0.0-alpha19"
+pagingRuntime = "3.1.1"
+
+
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -22,6 +31,18 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 junit = { module = "junit:junit", version.ref = "junit" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 runner = { module = "com.android.support.test:runner", version.ref = "runner" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+converterGson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
+paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingRuntime" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+paging-guava = { module = "androidx.paging:paging-guava", version.ref = "pagingRuntime" }
+paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
+paging-rxjava2 = { module = "androidx.paging:paging-rxjava2", version.ref = "pagingRuntime" }
+paging-rxjava3 = { module = "androidx.paging:paging-rxjava3", version.ref = "pagingRuntime" }
+
 
 [plugins]
 
@@ -29,4 +50,13 @@ runner = { module = "com.android.support.test:runner", version.ref = "runner" }
 hilt = [
     "hilt-android",
     "hilt-navigation-compose"
+]
+
+paging = [
+    "paging-common",
+    "paging-compose",
+    "paging-guava",
+    "paging-runtime",
+    "paging-rxjava2",
+    "paging-rxjava3"
 ]

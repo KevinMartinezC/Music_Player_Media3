@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Music Player</string>
+    <string name="navigation_icon">navigation icon\n</string>
+    <string name="search">Search</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="image_song">Image song</string>
 </resources>

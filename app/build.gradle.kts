@@ -73,6 +73,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation(libs.bundles.hilt)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.navigation.compose)
+    implementation(libs.coilCompose)
+    implementation(libs.bundles.paging)
+
+
+
 
 }
 
