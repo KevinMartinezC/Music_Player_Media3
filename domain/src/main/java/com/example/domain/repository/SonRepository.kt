@@ -3,5 +3,9 @@ package com.example.domain.repository
 import com.example.domain.SoundResult
 
 interface SoundRepository {
-    suspend fun search(query: String): List<SoundResult>
+    suspend fun search(
+        query: String,
+        page: Int,
+        pageSize: Int
+    ): List<SoundResult>
 }

@@ -75,6 +75,8 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.navigation.compose)
     implementation(libs.coilCompose)
+    implementation(libs.bundles.paging)
+
 
 
 

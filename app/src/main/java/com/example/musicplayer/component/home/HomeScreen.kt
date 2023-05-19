@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -37,11 +36,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.domain.SoundResult
 import com.example.musicplayer.R
 import com.example.musicplayer.component.home.viewmodel.HomeScreenViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -49,28 +49,27 @@ fun HomeScreen(modifier: Modifier, homeScreenViewModel: HomeScreenViewModel = hi
 
     val uiStateHome by homeScreenViewModel.uiStateHome.collectAsState()
 
+    val searchResults = homeScreenViewModel.searchResults.collectAsLazyPagingItems()
+
     HomeScreenContent(
-        search = uiStateHome.search,
-        searchResultList = uiStateHome.searchResultList
+        search = uiStateHome.search, searchResultList = searchResults
     )
 }
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent(
-    search: (String) -> Unit,
-    searchResultList: StateFlow<List<SoundResult>>,
+    search: (String) -> Unit, searchResultList: LazyPagingItems<SoundResult>
+
 ) {
     val searchQuery = remember { mutableStateOf("") }
-    val searchResults by searchResultList.collectAsState(initial = emptyList())
     val keyBoardControler = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 
     Column(modifier = Modifier) {
-        OutlinedTextField(
-            value = searchQuery.value,
+        OutlinedTextField(value = searchQuery.value,
             onValueChange = { searchQuery.value = it },
             label = { Text(stringResource(R.string.search)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -79,15 +78,13 @@ fun HomeScreenContent(
                 keyBoardControler?.hide()
             }),
             trailingIcon = {
-                IconButton(onClick =
-                {
+                IconButton(onClick = {
                     scope.launch {
                         search(searchQuery.value)
                         keyBoardControler?.hide()
                     }
 
-                })
-                {
+                }) {
                     Icon(
                         Icons.Default.Search,
                         contentDescription = stringResource(R.string.search_icon)
@@ -98,11 +95,12 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxWidth()
         )
 
-        searchResults.let { results ->
+        searchResultList.let { results ->
             if (isLandscape) {
                 LazyVerticalGrid(columns = GridCells.Fixed(4)) {
-                    items(results.size) { index ->
-                        val result = results[index]
+                    items(results.itemCount) { index ->
+                        val animeItem = searchResultList[index] ?: return@items
+
                         Card(
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
@@ -111,8 +109,8 @@ fun HomeScreenContent(
                         ) {
                             Column {
                                 Image(
-                                    painter = rememberAsyncImagePainter(result.images.waveformM),
-                                    contentDescription = "Image for ${result.name}",
+                                    painter = rememberAsyncImagePainter(animeItem.images.waveformM),
+                                    contentDescription = "Image for ${animeItem.name}",
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(8.dp)
@@ -120,7 +118,7 @@ fun HomeScreenContent(
                                     contentScale = ContentScale.Crop,
                                 )
                                 Text(
-                                    text = result.name,
+                                    text = animeItem.name,
                                     modifier = Modifier
                                         .padding(16.dp)
                                         .aspectRatio(3f),
@@ -131,14 +129,16 @@ fun HomeScreenContent(
                 }
             } else {
                 LazyColumn {
-                    items(results) { result ->
+                    items(results.itemCount) { result ->
+                        val animeItem = searchResultList[result] ?: return@items
+
                         Card(
                             modifier = Modifier.padding(8.dp),
                             shape = RoundedCornerShape(8.dp),
                         ) {
                             Column {
                                 Image(
-                                    painter = rememberAsyncImagePainter(result.images.waveformM),
+                                    painter = rememberAsyncImagePainter(animeItem.images.waveformM),
                                     contentDescription = "Image song ",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
@@ -146,14 +146,14 @@ fun HomeScreenContent(
                                         .fillMaxWidth(),
                                 )
                                 Text(
-                                    text = result.name,
-                                    modifier = Modifier.padding(16.dp)
+                                    text = animeItem.name, modifier = Modifier.padding(16.dp)
                                 )
                             }
                         }
                     }
                 }
             }
+
         }
     }
 }
