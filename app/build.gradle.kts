@@ -76,6 +76,12 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.coilCompose)
     implementation(libs.bundles.paging)
+    // Media3
+    implementation("androidx.media3:media3-session:1.0.1")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation ("com.google.code.gson:gson:2.8.6")
 
 
 

@@ -2,8 +2,6 @@ package com.example.data.di
 
 import com.example.data.MyApiService
 import com.example.data.TokenInterceptor
-import com.example.data.repositoryImpl.SoundRepositoryImpl
-import com.example.domain.repository.SoundRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

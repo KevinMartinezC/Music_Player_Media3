@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.SoundResult
 
-interface SoundRepository {
+interface GetSoundInfRepository {
     suspend fun search(
         query: String,
         page: Int,

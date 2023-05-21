@@ -43,6 +43,13 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converterGson)
     implementation(libs.bundles.paging)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
+// Media3
+    implementation("androidx.media3:media3-exoplayer:1.0.1")
+    implementation("androidx.media3:media3-ui:1.0.1")
+    implementation("androidx.media3:media3-session:1.0.1")
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 
 }
 

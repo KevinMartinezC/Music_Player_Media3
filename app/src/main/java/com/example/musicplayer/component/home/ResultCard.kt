@@ -1,6 +1,8 @@
 package com.example.musicplayer.component.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,16 +15,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.domain.SoundResult
 import com.example.musicplayer.R
 
 
 @Composable
-fun ResultCard(animeItem: SoundResult, grid: Boolean) {
+fun ResultCard(
+    animeItem: SoundResult,
+    grid: Boolean,
+    navController: NavHostController
+) {
+    Log.wtf("Test", "ID: ${animeItem.id}")
     Card(
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                navController.navigate(("detail/${animeItem.id}"))
+        }
+        ,
 
         ) {
         Column {

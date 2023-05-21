@@ -1,10 +1,10 @@
 package com.example.domain.usecases
 
 import com.example.domain.SoundResult
-import com.example.domain.repository.SoundRepository
+import com.example.domain.repository.GetSoundInfRepository
 import javax.inject.Inject
 
-class SearchUseCase @Inject constructor(private val sonRepository: SoundRepository) {
+class SearchUseCase @Inject constructor(private val sonRepository: GetSoundInfRepository) {
     suspend fun execute(
         query: String,
         page: Int,
