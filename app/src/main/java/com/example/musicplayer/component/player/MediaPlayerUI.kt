@@ -1,4 +1,4 @@
-package com.rcudev.simplemediaplayer.common.ui.components
+package com.example.musicplayer.component.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.musicplayer.UIEvent
-import com.example.musicplayer.components.PlayerBar
+import com.example.musicplayer.component.player.viewmodel.UIEvent
+
 
 @Composable
-fun SimpleMediaPlayerUI(
+fun MediaPlayerUI(
     modifier: Modifier = Modifier,
     durationString: String,
     playResourceProvider: () -> Int,
@@ -37,7 +37,6 @@ fun SimpleMediaPlayerUI(
                 progress = progress,
                 durationString = durationString,
                 progressString = progressString,
-                onUiEvent = onUiEvent
             )
             PlayerControls(
                 playResourceProvider = playResourceProvider,

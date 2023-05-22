@@ -1,7 +1,7 @@
 package com.example.data.di
 
-import com.example.data.MyApiService
-import com.example.data.TokenInterceptor
+import com.example.data.service.api.MyApiService
+import com.example.data.service.api.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

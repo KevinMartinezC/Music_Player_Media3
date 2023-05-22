@@ -23,7 +23,9 @@ import com.example.musicplayer.component.home.HomeScreen
 import com.example.musicplayer.component.navigation.BottomBar
 import com.example.musicplayer.component.navigation.BottomNavItem
 import com.example.musicplayer.ui.theme.MusicPlayerTheme
-import com.example.data.service.MediaService
+import com.example.data.service.media.MediaService
+import com.example.musicplayer.component.player.MediaScreenPlayer
+import com.example.musicplayer.component.player.viewmodel.MediaViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

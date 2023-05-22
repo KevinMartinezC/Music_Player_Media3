@@ -1,6 +1,7 @@
-package com.example.musicplayer
+package com.example.musicplayer.component.player.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,9 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.example.data.service.PlayerEvent
-import com.example.data.service.SimpleMediaServiceHandler
-import com.example.data.service.SimpleMediaState
+import com.example.data.service.media.PlayerEvent
+import com.example.data.service.media.SimpleMediaServiceHandler
+import com.example.data.service.media.SimpleMediaState
 import com.example.domain.usecases.LoadSongUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,8 +38,11 @@ class MediaViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
+        collectMediaState()
+    }
 
+    private fun collectMediaState() {
+        viewModelScope.launch {
             simpleMediaServiceHandler.simpleMediaState.collect { mediaState ->
                 when (mediaState) {
                     is SimpleMediaState.Buffering -> calculateProgressValues(mediaState.progress)
@@ -65,7 +69,6 @@ class MediaViewModel @Inject constructor(
             UIEvent.Backward -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.Backward)
             UIEvent.Forward -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.Forward)
             UIEvent.PlayPause -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.PlayPause)
-
         }
     }
 
@@ -81,9 +84,8 @@ class MediaViewModel @Inject constructor(
         progressString = formatDuration(currentProgress)
     }
 
-
     fun loadData(id: Int) = viewModelScope.launch {
-        try {
+        runCatching {
             val soundResult = loadSongUseCase(id)
             val mediaItem = MediaItem.Builder()
                 .setUri(soundResult.previews.previewHqMp3)
@@ -98,11 +100,8 @@ class MediaViewModel @Inject constructor(
                 .build()
 
             simpleMediaServiceHandler.addMediaItem(mediaItem)
-        } catch (e: Exception) {
-            // Handle error when fetching the SoundResult
-        }
+        }.onFailure { e -> Log.d("Error","${e.message}")}
     }
-
 }
 
 sealed class UIEvent {

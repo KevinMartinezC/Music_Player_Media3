@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.example.domain.SoundResult
+import com.example.domain.model.SoundResult
 import com.example.musicplayer.R
 
 

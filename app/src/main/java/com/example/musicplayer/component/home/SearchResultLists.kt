@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
-import com.example.domain.SoundResult
+import com.example.domain.model.SoundResult
 
 @Composable
 fun SearchResultsGrid(results: LazyPagingItems<SoundResult>, navController: NavHostController) {

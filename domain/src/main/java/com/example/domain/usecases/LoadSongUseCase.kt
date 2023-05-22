@@ -1,6 +1,6 @@
 package com.example.domain.usecases
 
-import com.example.domain.SoundResult
+import com.example.domain.model.SoundResult
 import com.example.domain.repository.SongRepository
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.service.api
 
 import retrofit2.http.GET
 import retrofit2.http.Path

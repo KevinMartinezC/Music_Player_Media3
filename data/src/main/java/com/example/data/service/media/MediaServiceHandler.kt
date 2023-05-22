@@ -1,4 +1,4 @@
-package com.example.data.service
+package com.example.data.service.media
 
 import android.annotation.SuppressLint
 import androidx.media3.common.MediaItem
@@ -28,10 +28,6 @@ class SimpleMediaServiceHandler @Inject constructor(
         player.prepare()
     }
 
-    fun addMediaItemList(mediaItemList: List<MediaItem>) {
-        player.setMediaItems(mediaItemList)
-        player.prepare()
-    }
 
     suspend fun onPlayerEvent(playerEvent: PlayerEvent) {
         when (playerEvent) {

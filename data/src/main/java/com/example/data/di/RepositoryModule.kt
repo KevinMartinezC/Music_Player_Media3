@@ -1,6 +1,6 @@
 package com.example.data.di
 
-import com.example.data.MyApiService
+import com.example.data.service.api.MyApiService
 import com.example.data.repositoryImpl.GetSoundInfRepositoryImpl
 import com.example.data.repositoryImpl.SongRepositoryImpl
 import com.example.domain.repository.GetSoundInfRepository

@@ -1,4 +1,4 @@
-package com.example.musicplayer.components
+package com.example.musicplayer.component.player
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Slider
@@ -6,14 +6,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.musicplayer.UIEvent
+import com.example.musicplayer.component.player.viewmodel.UIEvent
 
 @Composable
 internal fun PlayerBar(
     progress: Float,
     durationString: String,
     progressString: String,
-    onUiEvent: (UIEvent) -> Unit
 ) {
 
     Column(
@@ -22,7 +21,6 @@ internal fun PlayerBar(
         Slider(
             value =  progress,
             onValueChange = {},
-            onValueChangeFinished = {},
             modifier = Modifier
                 .padding(horizontal = 8.dp)
         )

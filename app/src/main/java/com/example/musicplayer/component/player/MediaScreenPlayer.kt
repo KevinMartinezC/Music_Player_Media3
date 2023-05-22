@@ -1,6 +1,6 @@
-package com.example.musicplayer
+package com.example.musicplayer.component.player
 
-import android.util.Log
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -12,7 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.rcudev.simplemediaplayer.common.ui.components.SimpleMediaPlayerUI
+import com.example.musicplayer.component.player.viewmodel.MediaViewModel
+import com.example.musicplayer.component.player.viewmodel.UIState
 
 @Composable
 internal fun MediaScreenPlayer(
@@ -22,7 +23,6 @@ internal fun MediaScreenPlayer(
     startService: () -> Unit,
 ) {
 
-    Log.wtf("Test"," testt${id}")
     val state = vm.uiState.collectAsState()
     // Call loadData with the passed URL when the Composable is first launched
     LaunchedEffect(Unit) {
@@ -62,11 +62,11 @@ private fun ReadyContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SimpleMediaPlayerUI(
+        MediaPlayerUI(
             durationString = vm.formatDuration(vm.duration),
             playResourceProvider = {
-                if (vm.isPlaying) android.R.drawable.ic_media_pause
-                else android.R.drawable.ic_media_play
+                if (vm.isPlaying) R.drawable.ic_media_pause
+                else R.drawable.ic_media_play
             },
             progressProvider = { Pair(vm.progress, vm.progressString) },
             onUiEvent = vm::onUIEvent,

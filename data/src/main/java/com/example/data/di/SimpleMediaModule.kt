@@ -9,7 +9,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.session.MediaSession
-import com.example.data.service.SimpleMediaServiceHandler
+import com.example.data.service.media.SimpleMediaServiceHandler
 import com.example.data.service.notification.SimpleMediaNotificationManager
 import dagger.Module
 import dagger.Provides

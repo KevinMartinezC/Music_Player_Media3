@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.domain.SoundResult
+import com.example.domain.model.SoundResult
 import com.example.musicplayer.component.home.viewmodel.HomeScreenViewModel
 
 @Composable
