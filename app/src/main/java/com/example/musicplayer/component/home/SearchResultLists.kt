@@ -8,12 +8,13 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import com.example.domain.model.SoundResult
 
+private const val GRID_CELLS_SIZE = 4
 @Composable
 fun SearchResultsGrid(results: LazyPagingItems<SoundResult>, navController: NavHostController) {
-    LazyVerticalGrid(columns = GridCells.Fixed(4)) {
+    LazyVerticalGrid(columns = GridCells.Fixed(GRID_CELLS_SIZE)) {
         items(results.itemCount) { index ->
             val animeItem = results[index] ?: return@items
-            ResultCard(animeItem = animeItem, grid = true,  navController = navController,)
+            ResultCard(musicItem = animeItem, grid = true,  navController = navController)
         }
     }
 }
@@ -23,7 +24,7 @@ fun SearchResultsColumn(results: LazyPagingItems<SoundResult>, navController: Na
     LazyColumn {
         items(results.itemCount) { result ->
             val animeItem = results[result] ?: return@items
-            ResultCard(animeItem = animeItem, grid = false,  navController = navController,)
+            ResultCard(musicItem = animeItem, grid = false,  navController = navController)
         }
     }
 }

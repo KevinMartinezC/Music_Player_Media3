@@ -19,13 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.data.service.media.MediaService
 import com.example.musicplayer.component.home.HomeScreen
 import com.example.musicplayer.component.navigation.BottomBar
 import com.example.musicplayer.component.navigation.BottomNavItem
-import com.example.musicplayer.ui.theme.MusicPlayerTheme
-import com.example.data.service.media.MediaService
 import com.example.musicplayer.component.player.MediaScreenPlayer
 import com.example.musicplayer.component.player.viewmodel.MediaViewModel
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

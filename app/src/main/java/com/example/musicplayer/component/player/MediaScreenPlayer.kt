@@ -1,6 +1,5 @@
 package com.example.musicplayer.component.player
 
-import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -8,23 +7,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.musicplayer.component.player.viewmodel.MediaViewModel
 import com.example.musicplayer.component.player.viewmodel.UIState
+//noinspection SuspiciousImport
+import android.R
+import com.example.musicplayer.component.player.viewmodel.UIEvent
 
 @Composable
 internal fun MediaScreenPlayer(
     id : Int,
-    vm: MediaViewModel,
+    vm: MediaViewModel = hiltViewModel(),
     navController: NavController,
     startService: () -> Unit,
 ) {
 
     val state = vm.uiState.collectAsState()
-    // Call loadData with the passed URL when the Composable is first launched
+    val uiStatePlayer by vm.uiStatePlayer.collectAsState()
+
     LaunchedEffect(Unit) {
         vm.loadData(id)
     }
@@ -44,7 +49,15 @@ internal fun MediaScreenPlayer(
                     startService()
                 }
 
-                ReadyContent(vm = vm, navController = navController)
+                MediaPlayerContent(
+                    navController = navController,
+                    formatDuration = uiStatePlayer.formatDuration,
+                    duration =  uiStatePlayer.duration,
+                    isPlaying = uiStatePlayer.isPlaying,
+                    progress = uiStatePlayer.progress,
+                    progressString = uiStatePlayer.progressString,
+                    onUIEvent = uiStatePlayer.onUIEvent
+                )
             }
         }
 
@@ -52,9 +65,14 @@ internal fun MediaScreenPlayer(
 }
 
 @Composable
-private fun ReadyContent(
-    vm: MediaViewModel,
+private fun MediaPlayerContent(
     navController: NavController,
+    formatDuration: (Long) -> String,
+    duration: Long,
+    isPlaying: Boolean,
+    progress: Float,
+    progressString: String,
+    onUIEvent: (UIEvent) -> Unit
 ) {
 
     Column(
@@ -63,13 +81,13 @@ private fun ReadyContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         MediaPlayerUI(
-            durationString = vm.formatDuration(vm.duration),
+            durationString = formatDuration(duration),
             playResourceProvider = {
-                if (vm.isPlaying) R.drawable.ic_media_pause
+                if (isPlaying) R.drawable.ic_media_pause
                 else R.drawable.ic_media_play
             },
-            progressProvider = { Pair(vm.progress, vm.progressString) },
-            onUiEvent = vm::onUIEvent,
+            progressProvider = { Pair(progress, progressString) },
+            onUiEvent = onUIEvent,
         )
 
     }

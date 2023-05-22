@@ -2,7 +2,6 @@ package com.example.musicplayer.component.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem(
@@ -14,10 +13,5 @@ sealed class BottomNavItem(
         route = "home",
         title = "Home",
         icon = Icons.Default.Home
-    )
-    object Player : BottomNavItem(
-        route = "player",
-        title = "Player",
-        icon = Icons.Default.PlayArrow
     )
 }

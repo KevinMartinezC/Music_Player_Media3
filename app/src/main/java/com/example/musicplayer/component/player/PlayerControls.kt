@@ -13,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.musicplayer.R
 import com.example.musicplayer.component.player.viewmodel.UIEvent
 
 @Composable
@@ -27,7 +29,7 @@ internal fun PlayerControls(
     ) {
         Icon(
             painter = painterResource(android.R.drawable.ic_media_rew),
-            contentDescription = "Backward Button",
+            contentDescription = stringResource(R.string.backward_button),
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable(onClick = { onUiEvent(UIEvent.Backward) })
@@ -36,7 +38,7 @@ internal fun PlayerControls(
         )
         Image(
             painter = painterResource(id = playResourceProvider()),
-            contentDescription = "Play/Pause Button",
+            contentDescription = stringResource(R.string.play_pause_button),
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable(onClick = { onUiEvent(UIEvent.PlayPause) })
@@ -45,7 +47,7 @@ internal fun PlayerControls(
         )
         Icon(
             painter = painterResource(android.R.drawable.ic_media_ff),
-            contentDescription = "Forward Button",
+            contentDescription = stringResource(R.string.forward_button),
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable(onClick = { onUiEvent(UIEvent.Forward) })

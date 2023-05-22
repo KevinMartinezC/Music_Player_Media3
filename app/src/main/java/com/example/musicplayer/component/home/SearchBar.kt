@@ -5,7 +5,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -22,7 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import com.example.musicplayer.R
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchField(
     onSearch: (String) -> Unit,
@@ -56,4 +55,6 @@ fun SearchField(
         singleLine = true,
         modifier = Modifier.fillMaxWidth()
     )
+
 }
+

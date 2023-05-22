@@ -1,6 +1,5 @@
 package com.example.musicplayer.component.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,33 +24,34 @@ import com.example.musicplayer.R
 
 @Composable
 fun ResultCard(
-    animeItem: SoundResult,
+    musicItem: SoundResult,
     grid: Boolean,
     navController: NavHostController
 ) {
-    Log.wtf("Test", "ID: ${animeItem.id}")
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+        ),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(8.dp)
             .clickable {
-                navController.navigate(("detail/${animeItem.id}"))
-        }
-        ,
-
-        ) {
+                navController.navigate(("detail/${musicItem.id}"))
+            },
+    ) {
         Column {
             Image(
-                painter = rememberAsyncImagePainter(animeItem.images.waveformM),
+                painter = rememberAsyncImagePainter(musicItem.images.waveformM),
                 contentDescription = stringResource(R.string.image_song),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .aspectRatio(if (grid) 2f else  3f),
+                    .aspectRatio(if (grid) 2f else 3f),
                 contentScale = ContentScale.Crop,
             )
             Text(
-                text = animeItem.name,
+                text = musicItem.name,
                 modifier = Modifier
                     .padding(16.dp)
                     .aspectRatio(if (grid) 3f else 5f),
