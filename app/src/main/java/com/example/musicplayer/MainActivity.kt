@@ -63,7 +63,6 @@ class MainActivity : ComponentActivity() {
                                 navBackStackEntry.arguments?.getInt("id")?.let { id ->
                                     MediaScreenPlayer(
                                         id = id,
-                                        vm = viewModel,
                                         navController = navController,
                                         startService = ::startService
                                     )

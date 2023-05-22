@@ -7,6 +7,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SimpleMediaServiceHandler @Inject constructor(
@@ -26,13 +27,23 @@ class SimpleMediaServiceHandler @Inject constructor(
     fun addMediaItem(mediaItem: MediaItem) {
         player.setMediaItem(mediaItem)
         player.prepare()
+        player.play()
     }
-
 
     suspend fun onPlayerEvent(playerEvent: PlayerEvent) {
         when (playerEvent) {
-            PlayerEvent.Backward -> player.seekBack()
-            PlayerEvent.Forward -> player.seekForward()
+            PlayerEvent.Backward -> {
+                val newPosition =
+                    (player.currentPosition - TimeUnit.SECONDS.toMillis(15)).coerceAtLeast(0)
+                player.seekTo(newPosition)
+            }
+
+            PlayerEvent.Forward -> {
+                val newPosition =
+                    (player.currentPosition + TimeUnit.SECONDS.toMillis(15)).coerceAtMost(player.duration)
+                player.seekTo(newPosition)
+            }
+
             PlayerEvent.PlayPause -> {
                 if (player.isPlaying) {
                     player.pause()
@@ -43,6 +54,7 @@ class SimpleMediaServiceHandler @Inject constructor(
                     startProgressUpdate()
                 }
             }
+
             PlayerEvent.Stop -> stopProgressUpdate()
             is PlayerEvent.UpdateProgress -> player.seekTo((player.duration * playerEvent.newProgress).toLong())
         }
@@ -53,6 +65,7 @@ class SimpleMediaServiceHandler @Inject constructor(
         when (playbackState) {
             ExoPlayer.STATE_BUFFERING -> _simpleMediaState.value =
                 SimpleMediaState.Buffering(player.currentPosition)
+
             ExoPlayer.STATE_READY -> _simpleMediaState.value =
                 SimpleMediaState.Ready(player.duration)
         }

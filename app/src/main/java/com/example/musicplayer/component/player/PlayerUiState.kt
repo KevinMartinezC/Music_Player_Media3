@@ -1,6 +1,8 @@
 package com.example.musicplayer.component.player
 
-import com.example.musicplayer.component.player.viewmodel.UIEvent
+import com.example.musicplayer.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.component.player.utils.UIEvent
+
 
 data class PlayerUiState(
     val formatDuration: (Long) -> String = { "" },
@@ -8,6 +10,7 @@ data class PlayerUiState(
     var isPlaying: Boolean = false,
     val progress: Float = 0f,
     val progressString: String = "",
-    val onUIEvent: (UIEvent) -> Unit = {}
-
+    val onUIEvent: (UIEvent) -> Unit = {},
+    val loadData: (Int) -> Unit,
+    val mediaPlayerStatus: MediaPlayerStatus = MediaPlayerStatus.Initial,
 )

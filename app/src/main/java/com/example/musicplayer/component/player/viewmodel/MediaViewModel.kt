@@ -11,6 +11,8 @@ import com.example.data.service.media.SimpleMediaServiceHandler
 import com.example.data.service.media.SimpleMediaState
 import com.example.domain.usecases.LoadSongUseCase
 import com.example.musicplayer.component.player.PlayerUiState
+import com.example.musicplayer.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.component.player.utils.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,10 +26,6 @@ class MediaViewModel @Inject constructor(
     private val loadSongUseCase: LoadSongUseCase,
 ) : ViewModel() {
 
-
-    private val _uiState = MutableStateFlow<UIState>(UIState.Initial)
-    val uiState = _uiState.asStateFlow()
-
     private val _uiStatePlayer = MutableStateFlow(
         PlayerUiState(
             formatDuration = ::formatDuration,
@@ -35,9 +33,11 @@ class MediaViewModel @Inject constructor(
             isPlaying = false,
             progress = 0f,
             progressString = "00:00",
-            onUIEvent = ::onUIEvent
+            onUIEvent = ::onUIEvent,
+            loadData = ::loadData
         )
     )
+
     val uiStatePlayer = _uiStatePlayer.asStateFlow()
 
     init {
@@ -49,12 +49,18 @@ class MediaViewModel @Inject constructor(
             simpleMediaServiceHandler.simpleMediaState.collect { mediaState ->
                 when (mediaState) {
                     is SimpleMediaState.Buffering -> calculateProgressValues(mediaState.progress)
-                    SimpleMediaState.Initial -> _uiState.value = UIState.Initial
-                    is SimpleMediaState.Playing -> _uiStatePlayer.value = _uiStatePlayer.value.copy(isPlaying = mediaState.isPlaying)
+                    SimpleMediaState.Initial -> _uiStatePlayer.value =
+                        _uiStatePlayer.value.copy(mediaPlayerStatus = MediaPlayerStatus.Initial)
+
+                    is SimpleMediaState.Playing -> _uiStatePlayer.value =
+                        _uiStatePlayer.value.copy(isPlaying = mediaState.isPlaying)
+
                     is SimpleMediaState.Progress -> calculateProgressValues(mediaState.progress)
                     is SimpleMediaState.Ready -> {
-                        _uiStatePlayer.value = _uiStatePlayer.value.copy(duration = mediaState.duration)
-                        _uiState.value = UIState.Ready
+                        _uiStatePlayer.value = _uiStatePlayer.value.copy(
+                            mediaPlayerStatus = MediaPlayerStatus.Ready,
+                            duration = mediaState.duration
+                        )
                     }
                 }
             }
@@ -86,7 +92,8 @@ class MediaViewModel @Inject constructor(
 
     private fun calculateProgressValues(currentProgress: Long) {
         val calculatedProgress =
-            if (currentProgress > 0) (currentProgress.toFloat() / _uiStatePlayer.value.duration) else 0f
+            if (currentProgress > 0) (currentProgress.toFloat() / _uiStatePlayer.value.duration)
+            else 0f
         val calculatedProgressString = formatDuration(currentProgress)
         _uiStatePlayer.value = _uiStatePlayer.value.copy(
             progress = calculatedProgress,
@@ -94,34 +101,24 @@ class MediaViewModel @Inject constructor(
         )
     }
 
+    private fun loadData(id: Int) {
+        viewModelScope.launch {
+            runCatching {
+                val soundResult = loadSongUseCase(id)
+                val mediaItem = MediaItem.Builder()
+                    .setUri(soundResult.previews.previewHqMp3)
+                    .setMediaMetadata(
+                        MediaMetadata.Builder()
+                            .setFolderType(MediaMetadata.FOLDER_TYPE_ALBUMS)
+                            .setArtworkUri(Uri.parse(soundResult.images.waveformM))
+                            .setAlbumTitle(soundResult.name)
+                            .setDisplayTitle(soundResult.username)
+                            .build()
+                    )
+                    .build()
 
-    fun loadData(id: Int) = viewModelScope.launch {
-        runCatching {
-            val soundResult = loadSongUseCase(id)
-            val mediaItem = MediaItem.Builder()
-                .setUri(soundResult.previews.previewHqMp3)
-                .setMediaMetadata(
-                    MediaMetadata.Builder()
-                        .setFolderType(MediaMetadata.FOLDER_TYPE_ALBUMS)
-                        .setArtworkUri(Uri.parse(soundResult.images.waveformM))
-                        .setAlbumTitle(soundResult.name)
-                        .setDisplayTitle(soundResult.username)
-                        .build()
-                )
-                .build()
-
-            simpleMediaServiceHandler.addMediaItem(mediaItem)
-        }.onFailure { e -> Log.d("Error", "${e.message}") }
+                simpleMediaServiceHandler.addMediaItem(mediaItem)
+            }.onFailure { e -> Log.d("Error", "${e.message}") }
+        }
     }
-}
-
-sealed class UIEvent {
-    object PlayPause : UIEvent()
-    object Backward : UIEvent()
-    object Forward : UIEvent()
-}
-
-sealed class UIState {
-    object Initial : UIState()
-    object Ready : UIState()
 }

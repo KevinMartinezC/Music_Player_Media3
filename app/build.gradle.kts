@@ -77,7 +77,7 @@ dependencies {
     implementation(libs.coilCompose)
     implementation(libs.bundles.paging)
     // Media3
-    implementation("androidx.media3:media3-session:1.0.1")
+    implementation("androidx.media3:media3-session:1.0.2")
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.3.0")

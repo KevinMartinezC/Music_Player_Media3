@@ -14,45 +14,44 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.musicplayer.component.player.viewmodel.MediaViewModel
-import com.example.musicplayer.component.player.viewmodel.UIState
 //noinspection SuspiciousImport
 import android.R
-import com.example.musicplayer.component.player.viewmodel.UIEvent
+import com.example.musicplayer.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.component.player.utils.UIEvent
 
 @Composable
 internal fun MediaScreenPlayer(
-    id : Int,
+    id: Int,
     vm: MediaViewModel = hiltViewModel(),
     navController: NavController,
     startService: () -> Unit,
 ) {
 
-    val state = vm.uiState.collectAsState()
     val uiStatePlayer by vm.uiStatePlayer.collectAsState()
 
     LaunchedEffect(Unit) {
-        vm.loadData(id)
+        uiStatePlayer.loadData(id)
     }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        when (state.value) {
-            UIState.Initial -> CircularProgressIndicator(
+        when (uiStatePlayer.mediaPlayerStatus) {
+            MediaPlayerStatus.Initial -> CircularProgressIndicator(
                 modifier = Modifier
                     .size(30.dp)
                     .align(Alignment.Center)
             )
-            is UIState.Ready -> {
+
+            is MediaPlayerStatus.Ready -> {
                 LaunchedEffect(true) {
                     startService()
                 }
-
                 MediaPlayerContent(
                     navController = navController,
                     formatDuration = uiStatePlayer.formatDuration,
-                    duration =  uiStatePlayer.duration,
+                    duration = uiStatePlayer.duration,
                     isPlaying = uiStatePlayer.isPlaying,
                     progress = uiStatePlayer.progress,
                     progressString = uiStatePlayer.progressString,
@@ -83,12 +82,10 @@ private fun MediaPlayerContent(
         MediaPlayerUI(
             durationString = formatDuration(duration),
             playResourceProvider = {
-                if (isPlaying) R.drawable.ic_media_pause
-                else R.drawable.ic_media_play
+                if (isPlaying) R.drawable.ic_media_pause else R.drawable.ic_media_play
             },
             progressProvider = { Pair(progress, progressString) },
             onUiEvent = onUIEvent,
         )
-
     }
 }
