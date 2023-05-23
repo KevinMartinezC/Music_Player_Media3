@@ -36,12 +36,11 @@ class SimpleMediaModule {
     fun providePlayer(
         @ApplicationContext context: Context,
         audioAttributes: AudioAttributes
-    ): ExoPlayer =
-        ExoPlayer.Builder(context)
-            .setAudioAttributes(audioAttributes, true)
-            .setHandleAudioBecomingNoisy(true)
-            .setTrackSelector(DefaultTrackSelector(context))
-            .build()
+    ): ExoPlayer = ExoPlayer.Builder(context)
+        .setAudioAttributes(audioAttributes, true)
+        .setHandleAudioBecomingNoisy(true)
+        .setTrackSelector(DefaultTrackSelector(context))
+        .build()
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
@@ -49,26 +48,21 @@ class SimpleMediaModule {
     fun provideNotificationManager(
         @ApplicationContext context: Context,
         player: ExoPlayer
-    ): SimpleMediaNotificationManager =
-        SimpleMediaNotificationManager(
-            context = context,
-            player = player
-        )
+    ): SimpleMediaNotificationManager = SimpleMediaNotificationManager(
+        context = context,
+        player = player
+    )
 
     @Provides
     @Singleton
     fun provideMediaSession(
         @ApplicationContext context: Context,
         player: ExoPlayer
-    ): MediaSession =
-        MediaSession.Builder(context, player).build()
+    ): MediaSession = MediaSession.Builder(context, player).build()
 
     @Provides
     @Singleton
     fun provideServiceHandler(
         player: ExoPlayer
-    ): SimpleMediaServiceHandler =
-        SimpleMediaServiceHandler(
-            player = player
-        )
+    ): SimpleMediaServiceHandler = SimpleMediaServiceHandler(player = player)
 }

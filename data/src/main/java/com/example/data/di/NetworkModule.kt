@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import com.example.data.BuildConfig
 import com.example.data.service.api.MyApiService
 import com.example.data.service.api.TokenInterceptor
 import dagger.Module
@@ -16,14 +17,17 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
+    @Singleton
     fun provideTokenInterceptor(): TokenInterceptor {
-        val token = "JomEnL5tN9nzV5fvA6LTTcybHXJOO2pcUZroOlj0"
+        val token = BuildConfig.TOKEN_API
         return TokenInterceptor(token)
     }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(tokenInterceptor: TokenInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        tokenInterceptor: TokenInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(tokenInterceptor)
             .build()
@@ -31,15 +35,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://freesound.org")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
     }
+
     @Provides
     @Singleton
-    fun provideMyApiService(retrofit: Retrofit): MyApiService = retrofit.create(MyApiService::class.java)
-
+    fun provideMyApiService(
+        retrofit: Retrofit
+    ): MyApiService = retrofit.create(MyApiService::class.java)
 }

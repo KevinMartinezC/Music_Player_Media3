@@ -16,10 +16,13 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideSoundRepository(apiService: MyApiService): GetSoundInfRepository = GetSoundInfRepositoryImpl(apiService)
+    fun provideSoundRepository(
+        apiService: MyApiService
+    ): GetSoundInfRepository = GetSoundInfRepositoryImpl(apiService)
 
     @Provides
     @Singleton
-    fun provideSoundResultRepository(apiService: MyApiService): SongRepository = SongRepositoryImpl(apiService)
-
+    fun provideSoundResultRepository(
+        apiService: MyApiService
+    ): SongRepository = SongRepositoryImpl(apiService)
 }

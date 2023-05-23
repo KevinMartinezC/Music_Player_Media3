@@ -12,6 +12,16 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        buildConfigField(
+            "String",
+            "TOKEN_API",
+            project.property("tokenApi").toString()
+        )
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            project.property("baseURL").toString()
+        )
         minSdk = 24
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -26,6 +36,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

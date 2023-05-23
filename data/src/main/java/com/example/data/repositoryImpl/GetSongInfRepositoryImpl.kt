@@ -6,7 +6,9 @@ import com.example.domain.model.SoundResult
 import com.example.domain.repository.GetSoundInfRepository
 import javax.inject.Inject
 
-class GetSoundInfRepositoryImpl @Inject constructor(private val apiService: MyApiService) : GetSoundInfRepository {
+class GetSoundInfRepositoryImpl @Inject constructor(
+    private val apiService: MyApiService
+) : GetSoundInfRepository {
     override suspend fun search(
         query: String,
         page: Int,
