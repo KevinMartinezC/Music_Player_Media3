@@ -11,6 +11,8 @@ import com.example.data.service.notification.SimpleMediaNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+private const val INITIAL_POSITION_SEEKBAR = 0L
+
 @AndroidEntryPoint
 class MediaService : MediaSessionService() {
 
@@ -36,7 +38,7 @@ class MediaService : MediaSessionService() {
         mediaSession.run {
             release()
             if (player.playbackState != Player.STATE_IDLE) {
-                player.seekTo(0)
+                player.seekTo(INITIAL_POSITION_SEEKBAR)
                 player.playWhenReady = false
                 player.stop()
             }
