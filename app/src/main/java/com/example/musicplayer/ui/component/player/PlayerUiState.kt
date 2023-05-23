@@ -1,7 +1,7 @@
-package com.example.musicplayer.component.player
+package com.example.musicplayer.ui.component.player
 
-import com.example.musicplayer.component.player.utils.MediaPlayerStatus
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 
 
 data class PlayerUiState(

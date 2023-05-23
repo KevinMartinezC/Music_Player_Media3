@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.player.viewmodel
+package com.example.musicplayer.ui.component.player.viewmodel
 
 import android.net.Uri
 import android.util.Log
@@ -10,9 +10,9 @@ import com.example.data.service.media.MediaServiceHandler
 import com.example.data.service.media.utils.MediaState
 import com.example.data.service.media.utils.PlayerEvent
 import com.example.domain.usecases.LoadSongUseCase
-import com.example.musicplayer.component.player.PlayerUiState
-import com.example.musicplayer.component.player.utils.MediaPlayerStatus
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.PlayerUiState
+import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

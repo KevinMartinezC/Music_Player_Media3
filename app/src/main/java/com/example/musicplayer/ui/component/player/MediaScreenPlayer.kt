@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.player
+package com.example.musicplayer.ui.component.player
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.example.musicplayer.component.player.viewmodel.MediaViewModel
+import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel
 import com.example.musicplayer.R
-import com.example.musicplayer.component.player.utils.MediaPlayerStatus
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 
 @Composable
 internal fun MediaScreenPlayer(
@@ -70,7 +70,7 @@ private fun MediaPlayerContent(
     albumArtUrl: String,
     onUIEvent: (UIEvent) -> Unit
 ) {
-    
+
 val scrollState = rememberScrollState()
 
     Column(

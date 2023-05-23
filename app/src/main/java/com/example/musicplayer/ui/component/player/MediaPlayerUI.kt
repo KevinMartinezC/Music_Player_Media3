@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.player
+package com.example.musicplayer.ui.component.player
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import com.example.musicplayer.R
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 
 
 @Composable

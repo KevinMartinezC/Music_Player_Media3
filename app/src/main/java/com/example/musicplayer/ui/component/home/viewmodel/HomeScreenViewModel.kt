@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.home.viewmodel
+package com.example.musicplayer.ui.component.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import androidx.paging.cachedIn
 import com.example.data.utils.SoundPagingSource
 import com.example.domain.model.SoundResult
 import com.example.domain.usecases.SearchUseCase
-import com.example.musicplayer.component.home.HomeUiState
+import com.example.musicplayer.ui.component.home.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.player
+package com.example.musicplayer.ui.component.player
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Slider

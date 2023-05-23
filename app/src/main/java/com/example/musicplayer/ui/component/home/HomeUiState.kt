@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.home
+package com.example.musicplayer.ui.component.home
 
 data class HomeUiState(
     val search: (String) -> Unit = {},

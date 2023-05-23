@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.navigation
+package com.example.musicplayer.ui.component.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.musicplayer.component.home.HomeScreen
-import com.example.musicplayer.component.player.MediaScreenPlayer
+import com.example.musicplayer.ui.component.home.HomeScreen
+import com.example.musicplayer.ui.component.player.MediaScreenPlayer
 
 @Composable
 fun BottomNavGraph() {

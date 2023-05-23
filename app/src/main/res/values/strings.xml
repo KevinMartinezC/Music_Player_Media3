@@ -7,4 +7,5 @@
     <string name="backward_button">Backward Button</string>
     <string name="play_pause_button">Play/Pause Button</string>
     <string name="forward_button">Forward Button</string>
+    <string name="no_results_found">No Results Found</string>
 </resources>

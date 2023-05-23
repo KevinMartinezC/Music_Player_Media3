@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.home
+package com.example.musicplayer.ui.component.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
