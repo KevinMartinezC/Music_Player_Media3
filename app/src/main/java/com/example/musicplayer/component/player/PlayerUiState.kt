@@ -10,6 +10,7 @@ data class PlayerUiState(
     var isPlaying: Boolean = false,
     val progress: Float = 0f,
     val progressString: String = "",
+    val albumArtUrl: String = "",
     val onUIEvent: (UIEvent) -> Unit = {},
     val loadData: (Int) -> Unit,
     val startMediaService: () -> Unit,

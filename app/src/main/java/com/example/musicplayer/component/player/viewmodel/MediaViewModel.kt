@@ -40,6 +40,7 @@ class MediaViewModel @Inject constructor(
             isPlaying = false,
             progress = 0f,
             progressString = "00:00",
+            albumArtUrl = "",
             onUIEvent = ::onUIEvent,
             loadData = ::loadData,
             startMediaService = ::startMediaService
@@ -55,6 +56,7 @@ class MediaViewModel @Inject constructor(
     private fun startMediaService(){
         startMediaServiceUseCase.execute()
     }
+
 
     private fun collectMediaState() {
         viewModelScope.launch {
@@ -132,6 +134,9 @@ class MediaViewModel @Inject constructor(
                     .build()
 
                 mediaServiceHandler.addMediaItem(mediaItem)
+                _uiStatePlayer.value = _uiStatePlayer.value.copy(
+                    albumArtUrl = soundResult.images.waveformM
+                )
             }.onFailure { e -> Log.d("Error", "${e.message}") }
         }
     }
