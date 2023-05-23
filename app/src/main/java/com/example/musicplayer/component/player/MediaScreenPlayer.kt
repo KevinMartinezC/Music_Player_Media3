@@ -45,9 +45,6 @@ internal fun MediaScreenPlayer(
             )
 
             is MediaPlayerStatus.Ready -> {
-                LaunchedEffect(true) {
-                   uiStatePlayer.startMediaService()
-                }
                 MediaPlayerContent(
                     formatDuration = uiStatePlayer.formatDuration,
                     duration = uiStatePlayer.duration,
@@ -73,6 +70,7 @@ private fun MediaPlayerContent(
     albumArtUrl: String,
     onUIEvent: (UIEvent) -> Unit
 ) {
+    
 val scrollState = rememberScrollState()
 
     Column(

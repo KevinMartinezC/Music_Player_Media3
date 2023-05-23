@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="com.example.data.service.media.MediaService" />
+        <service android:name=".service.MediaService" />
     </application>
 
 </manifest>

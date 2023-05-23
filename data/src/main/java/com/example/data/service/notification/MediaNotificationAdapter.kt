@@ -21,7 +21,6 @@ class MediaNotificationAdapter(
     override fun getCurrentContentTitle(player: Player): CharSequence =
         (player.mediaMetadata.albumTitle as String?).orEmpty()
 
-
     override fun createCurrentContentIntent(player: Player): PendingIntent? =
         pendingIntent
 
@@ -47,5 +46,4 @@ class MediaNotificationAdapter(
             })
         return null
     }
-
 }

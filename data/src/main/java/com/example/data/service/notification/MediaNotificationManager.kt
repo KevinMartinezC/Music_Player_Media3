@@ -3,6 +3,7 @@ package com.example.data.service.notification
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -37,19 +38,21 @@ class MediaNotificationManager @Inject constructor(
     @UnstableApi
     fun startNotificationService(
         mediaSessionService: MediaSessionService,
-        mediaSession: MediaSession
+        mediaSession: MediaSession,
+        pendingIntent: PendingIntent
     ) {
-        buildNotification(mediaSession)
+        buildNotification(mediaSession,pendingIntent)
         startForegroundNotification(mediaSessionService)
     }
 
     @UnstableApi
-    private fun buildNotification(mediaSession: MediaSession) {
+    private fun buildNotification(mediaSession: MediaSession, pendingIntent: PendingIntent) {
+
         PlayerNotificationManager.Builder(context, NOTIFICATION_ID, NOTIFICATION_CHANNEL_ID)
             .setMediaDescriptionAdapter(
                 MediaNotificationAdapter(
                     context = context,
-                    pendingIntent = mediaSession.sessionActivity
+                    pendingIntent = pendingIntent
                 )
             )
             .setSmallIconResourceId(R.drawable.ic_microphone)
