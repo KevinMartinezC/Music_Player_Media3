@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.2.0-alpha01")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,6 +76,12 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.coilCompose)
     implementation(libs.bundles.paging)
+    // Media3
+    implementation("androidx.media3:media3-session:1.0.2")
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation ("com.google.code.gson:gson:2.8.6")
 
 
 

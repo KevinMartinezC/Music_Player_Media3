@@ -4,4 +4,7 @@
     <string name="search">Search</string>
     <string name="search_icon">Search Icon</string>
     <string name="image_song">Image song</string>
+    <string name="backward_button">Backward Button</string>
+    <string name="play_pause_button">Play/Pause Button</string>
+    <string name="forward_button">Forward Button</string>
 </resources>

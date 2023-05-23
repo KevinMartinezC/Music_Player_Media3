@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="wight_8dp">8dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="padding_12dp">12dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="corner_8dp">8dp</dimen>
+    <dimen name="elevation_8dp">8dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_34dp">34dp</dimen>
+    <dimen name="size_56dp">56dp</dimen>
+    <dimen name="space_35dp">35dp</dimen>
+</resources>

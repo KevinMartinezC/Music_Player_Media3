@@ -1,8 +1,8 @@
-package com.example.data
+package com.example.data.utils
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.domain.SoundResult
+import com.example.domain.model.SoundResult
 import com.example.domain.usecases.SearchUseCase
 
 class SoundPagingSource(
