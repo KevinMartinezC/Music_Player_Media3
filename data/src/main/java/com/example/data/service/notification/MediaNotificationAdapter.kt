@@ -1,4 +1,4 @@
-package com.rcudev.player_service.service.notification
+package com.example.data.service.notification
 
 import android.app.PendingIntent
 import android.content.Context
@@ -13,19 +13,20 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 @UnstableApi
-class SimpleMediaNotificationAdapter(
+class MediaNotificationAdapter(
     private val context: Context,
     private val pendingIntent: PendingIntent?
 ) : PlayerNotificationManager.MediaDescriptionAdapter {
 
     override fun getCurrentContentTitle(player: Player): CharSequence =
-        player.mediaMetadata.albumTitle ?: ""
+        (player.mediaMetadata.albumTitle as String?).orEmpty()
+
 
     override fun createCurrentContentIntent(player: Player): PendingIntent? =
         pendingIntent
 
     override fun getCurrentContentText(player: Player): CharSequence =
-        player.mediaMetadata.displayTitle ?: ""
+        (player.mediaMetadata.displayTitle as String?).orEmpty()
 
     override fun getCurrentLargeIcon(
         player: Player,

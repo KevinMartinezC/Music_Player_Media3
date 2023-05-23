@@ -14,7 +14,6 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.ui.PlayerNotificationManager
 import com.example.data.R
-import com.rcudev.player_service.service.notification.SimpleMediaNotificationAdapter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -23,7 +22,7 @@ private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"
 private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
 
 @RequiresApi(Build.VERSION_CODES.O)
-class SimpleMediaNotificationManager @Inject constructor(
+class MediaNotificationManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val player: ExoPlayer
 ) {
@@ -48,7 +47,7 @@ class SimpleMediaNotificationManager @Inject constructor(
     private fun buildNotification(mediaSession: MediaSession) {
         PlayerNotificationManager.Builder(context, NOTIFICATION_ID, NOTIFICATION_CHANNEL_ID)
             .setMediaDescriptionAdapter(
-                SimpleMediaNotificationAdapter(
+                MediaNotificationAdapter(
                     context = context,
                     pendingIntent = mediaSession.sessionActivity
                 )

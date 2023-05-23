@@ -4,18 +4,22 @@ import android.annotation.SuppressLint
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.example.data.service.media.utils.MediaState
+import com.example.data.service.media.utils.PlayerEvent
+import com.example.data.service.media.utils.seekPlayer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SimpleMediaServiceHandler @Inject constructor(
+private const val SEEK_SECONDS = 15L
+
+class MediaServiceHandler @Inject constructor(
     private val player: ExoPlayer
 ) : Player.Listener {
 
-    private val _simpleMediaState = MutableStateFlow<SimpleMediaState>(SimpleMediaState.Initial)
-    val simpleMediaState = _simpleMediaState.asStateFlow()
+    private val _mediaState = MutableStateFlow<MediaState>(MediaState.Initial)
+    val mediaState = _mediaState.asStateFlow()
 
     private var job: Job? = null
 
@@ -32,25 +36,15 @@ class SimpleMediaServiceHandler @Inject constructor(
 
     suspend fun onPlayerEvent(playerEvent: PlayerEvent) {
         when (playerEvent) {
-            PlayerEvent.Backward -> {
-                val newPosition =
-                    (player.currentPosition - TimeUnit.SECONDS.toMillis(15)).coerceAtLeast(0)
-                player.seekTo(newPosition)
-            }
-
-            PlayerEvent.Forward -> {
-                val newPosition =
-                    (player.currentPosition + TimeUnit.SECONDS.toMillis(15)).coerceAtMost(player.duration)
-                player.seekTo(newPosition)
-            }
-
+            PlayerEvent.Backward -> seekPlayer(player, SEEK_SECONDS, false)
+            PlayerEvent.Forward -> seekPlayer(player, SEEK_SECONDS, true)
             PlayerEvent.PlayPause -> {
                 if (player.isPlaying) {
                     player.pause()
                     stopProgressUpdate()
                 } else {
                     player.play()
-                    _simpleMediaState.value = SimpleMediaState.Playing(isPlaying = true)
+                    _mediaState.value = MediaState.Playing(isPlaying = true)
                     startProgressUpdate()
                 }
             }
@@ -63,17 +57,17 @@ class SimpleMediaServiceHandler @Inject constructor(
     @SuppressLint("SwitchIntDef")
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
-            ExoPlayer.STATE_BUFFERING -> _simpleMediaState.value =
-                SimpleMediaState.Buffering(player.currentPosition)
+            ExoPlayer.STATE_BUFFERING -> _mediaState.value =
+                MediaState.Buffering(player.currentPosition)
 
-            ExoPlayer.STATE_READY -> _simpleMediaState.value =
-                SimpleMediaState.Ready(player.duration)
+            ExoPlayer.STATE_READY -> _mediaState.value =
+                MediaState.Ready(player.duration)
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onIsPlayingChanged(isPlaying: Boolean) {
-        _simpleMediaState.value = SimpleMediaState.Playing(isPlaying = isPlaying)
+        _mediaState.value = MediaState.Playing(isPlaying = isPlaying)
         if (isPlaying) {
             GlobalScope.launch(Dispatchers.Main) {
                 startProgressUpdate()
@@ -86,28 +80,12 @@ class SimpleMediaServiceHandler @Inject constructor(
     private suspend fun startProgressUpdate() = job.run {
         while (true) {
             delay(500)
-            _simpleMediaState.value = SimpleMediaState.Progress(player.currentPosition)
+            _mediaState.value = MediaState.Progress(player.currentPosition)
         }
     }
 
     private fun stopProgressUpdate() {
         job?.cancel()
-        _simpleMediaState.value = SimpleMediaState.Playing(isPlaying = false)
+        _mediaState.value = MediaState.Playing(isPlaying = false)
     }
-}
-
-sealed class PlayerEvent {
-    object PlayPause : PlayerEvent()
-    object Backward : PlayerEvent()
-    object Forward : PlayerEvent()
-    object Stop : PlayerEvent()
-    data class UpdateProgress(val newProgress: Float) : PlayerEvent()
-}
-
-sealed class SimpleMediaState {
-    object Initial : SimpleMediaState()
-    data class Ready(val duration: Long) : SimpleMediaState()
-    data class Progress(val progress: Long) : SimpleMediaState()
-    data class Buffering(val progress: Long) : SimpleMediaState()
-    data class Playing(val isPlaying: Boolean) : SimpleMediaState()
 }

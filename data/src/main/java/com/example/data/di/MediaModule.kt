@@ -9,8 +9,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.session.MediaSession
-import com.example.data.service.media.SimpleMediaServiceHandler
-import com.example.data.service.notification.SimpleMediaNotificationManager
+import com.example.data.service.media.MediaServiceHandler
+import com.example.data.service.notification.MediaNotificationManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,15 +20,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class SimpleMediaModule {
+class MediaModule {
 
     @Provides
     @Singleton
-    fun provideAudioAttributes(): AudioAttributes =
-        AudioAttributes.Builder()
-            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-            .setUsage(C.USAGE_MEDIA)
-            .build()
+    fun provideAudioAttributes(): AudioAttributes = AudioAttributes.Builder()
+        .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+        .setUsage(C.USAGE_MEDIA)
+        .build()
 
     @Provides
     @Singleton
@@ -48,7 +47,7 @@ class SimpleMediaModule {
     fun provideNotificationManager(
         @ApplicationContext context: Context,
         player: ExoPlayer
-    ): SimpleMediaNotificationManager = SimpleMediaNotificationManager(
+    ): MediaNotificationManager = MediaNotificationManager(
         context = context,
         player = player
     )
@@ -64,5 +63,5 @@ class SimpleMediaModule {
     @Singleton
     fun provideServiceHandler(
         player: ExoPlayer
-    ): SimpleMediaServiceHandler = SimpleMediaServiceHandler(player = player)
+    ): MediaServiceHandler = MediaServiceHandler(player = player)
 }

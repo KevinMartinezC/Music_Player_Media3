@@ -12,5 +12,6 @@ data class PlayerUiState(
     val progressString: String = "",
     val onUIEvent: (UIEvent) -> Unit = {},
     val loadData: (Int) -> Unit,
+    val startMediaService: () -> Unit,
     val mediaPlayerStatus: MediaPlayerStatus = MediaPlayerStatus.Initial,
 )

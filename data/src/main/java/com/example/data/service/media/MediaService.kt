@@ -7,9 +7,11 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import com.example.data.service.notification.SimpleMediaNotificationManager
+import com.example.data.service.notification.MediaNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
+private const val INITIAL_POSITION_SEEKBAR = 0L
 
 @AndroidEntryPoint
 class MediaService : MediaSessionService() {
@@ -18,7 +20,7 @@ class MediaService : MediaSessionService() {
     lateinit var mediaSession: MediaSession
 
     @Inject
-    lateinit var notificationManager: SimpleMediaNotificationManager
+    lateinit var notificationManager: MediaNotificationManager
 
     @RequiresApi(Build.VERSION_CODES.O)
     @UnstableApi
@@ -36,7 +38,7 @@ class MediaService : MediaSessionService() {
         mediaSession.run {
             release()
             if (player.playbackState != Player.STATE_IDLE) {
-                player.seekTo(0)
+                player.seekTo(INITIAL_POSITION_SEEKBAR)
                 player.playWhenReady = false
                 player.stop()
             }
