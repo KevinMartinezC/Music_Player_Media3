@@ -6,8 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.data.SoundPagingSource
-import com.example.domain.SoundResult
+import com.example.data.utils.SoundPagingSource
+import com.example.domain.model.SoundResult
 import com.example.domain.usecases.SearchUseCase
 import com.example.musicplayer.component.home.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
+
+private const val PAGE_SIZE = 20
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -31,8 +33,8 @@ class HomeScreenViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchResults: Flow<PagingData<SoundResult>> = _query.flatMapLatest { query ->
         Pager(
-            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
-            pagingSourceFactory = { SoundPagingSource(searchUseCase, query, 20) }
+            config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+            pagingSourceFactory = { SoundPagingSource(searchUseCase, query, PAGE_SIZE) }
         ).flow
     }.cachedIn(viewModelScope)
 

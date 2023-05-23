@@ -12,6 +12,16 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        buildConfigField(
+            "String",
+            "TOKEN_API",
+            project.property("tokenApi").toString()
+        )
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            project.property("baseURL").toString()
+        )
         minSdk = 24
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -26,6 +36,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -43,7 +56,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converterGson)
     implementation(libs.bundles.paging)
-
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.glide)
 }
 
 kapt {
