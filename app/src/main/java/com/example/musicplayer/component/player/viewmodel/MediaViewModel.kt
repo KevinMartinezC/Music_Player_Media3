@@ -20,6 +20,12 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+private const val DURATION_FORMAT = "%02d:%02d"
+private const val DEFAULT_PROGRESS_VALUE = 0L
+private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
+private const val ONE_MINUTE = 1L
+
+
 @HiltViewModel
 class MediaViewModel @Inject constructor(
     private val simpleMediaServiceHandler: SimpleMediaServiceHandler,
@@ -86,14 +92,16 @@ class MediaViewModel @Inject constructor(
     private fun formatDuration(duration: Long): String {
         val minutes: Long = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
         val seconds: Long = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS)
-                - minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES))
-        return String.format("%02d:%02d", minutes, seconds)
+                - minutes * TimeUnit.SECONDS.convert(ONE_MINUTE, TimeUnit.MINUTES))
+        return String.format(DURATION_FORMAT, minutes, seconds)
     }
 
     private fun calculateProgressValues(currentProgress: Long) {
         val calculatedProgress =
-            if (currentProgress > 0) (currentProgress.toFloat() / _uiStatePlayer.value.duration)
-            else 0f
+            if (currentProgress > DEFAULT_PROGRESS_VALUE)
+                (currentProgress.toFloat() / _uiStatePlayer.value.duration)
+            else DEFAULT_PROGRESS_PERCENTAGE
+
         val calculatedProgressString = formatDuration(currentProgress)
         _uiStatePlayer.value = _uiStatePlayer.value.copy(
             progress = calculatedProgress,

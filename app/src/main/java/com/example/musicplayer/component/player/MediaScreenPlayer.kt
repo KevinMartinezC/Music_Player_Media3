@@ -10,12 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.musicplayer.component.player.viewmodel.MediaViewModel
-//noinspection SuspiciousImport
-import android.R
+import com.example.musicplayer.R
 import com.example.musicplayer.component.player.utils.MediaPlayerStatus
 import com.example.musicplayer.component.player.utils.UIEvent
 
@@ -23,7 +21,6 @@ import com.example.musicplayer.component.player.utils.UIEvent
 internal fun MediaScreenPlayer(
     id: Int,
     vm: MediaViewModel = hiltViewModel(),
-    navController: NavController,
     startService: () -> Unit,
 ) {
 
@@ -40,7 +37,7 @@ internal fun MediaScreenPlayer(
         when (uiStatePlayer.mediaPlayerStatus) {
             MediaPlayerStatus.Initial -> CircularProgressIndicator(
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(dimensionResource(id = R.dimen.size_30dp))
                     .align(Alignment.Center)
             )
 
@@ -49,7 +46,6 @@ internal fun MediaScreenPlayer(
                     startService()
                 }
                 MediaPlayerContent(
-                    navController = navController,
                     formatDuration = uiStatePlayer.formatDuration,
                     duration = uiStatePlayer.duration,
                     isPlaying = uiStatePlayer.isPlaying,
@@ -65,7 +61,6 @@ internal fun MediaScreenPlayer(
 
 @Composable
 private fun MediaPlayerContent(
-    navController: NavController,
     formatDuration: (Long) -> String,
     duration: Long,
     isPlaying: Boolean,

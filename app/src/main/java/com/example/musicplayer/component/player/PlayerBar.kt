@@ -5,7 +5,9 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.example.musicplayer.R
+
 
 @Composable
 internal fun PlayerBar(
@@ -18,16 +20,16 @@ internal fun PlayerBar(
         modifier = Modifier.fillMaxWidth()
     ) {
         Slider(
-            value =  progress,
+            value = progress,
             onValueChange = {},
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_8dp))
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_16dp))
         ) {
             Text(text = progressString)
             Text(text = durationString)

@@ -27,7 +27,7 @@ fun SearchField(
     onSearch: (String) -> Unit,
 ) {
     val searchQuery = remember { mutableStateOf("") }
-    val keyBoardControler = LocalSoftwareKeyboardController.current
+    val keyBoardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
 
     OutlinedTextField(
@@ -37,13 +37,13 @@ fun SearchField(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {
             onSearch(searchQuery.value)
-            keyBoardControler?.hide()
+            keyBoardController?.hide()
         }),
         trailingIcon = {
             IconButton(onClick = {
                 scope.launch {
                     onSearch(searchQuery.value)
-                    keyBoardControler?.hide()
+                    keyBoardController?.hide()
                 }
             }) {
                 Icon(

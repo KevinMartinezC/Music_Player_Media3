@@ -10,7 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.example.musicplayer.R
 import com.example.musicplayer.component.player.utils.UIEvent
 
 
@@ -26,8 +27,11 @@ fun MediaPlayerUI(
 
     Box(
         modifier = modifier
-            .padding(16.dp)
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
+            .padding(dimensionResource(id = R.dimen.padding_16dp))
+            .shadow(
+                elevation = dimensionResource(id = R.dimen.elevation_8dp),
+                shape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_8dp))
+            )
             .background(Color.LightGray)
     ) {
         Column(
