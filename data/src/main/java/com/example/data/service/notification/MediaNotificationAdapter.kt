@@ -1,4 +1,4 @@
-package com.rcudev.player_service.service.notification
+package com.example.data.service.notification
 
 import android.app.PendingIntent
 import android.content.Context
@@ -13,7 +13,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 @UnstableApi
-class SimpleMediaNotificationAdapter(
+class MediaNotificationAdapter(
     private val context: Context,
     private val pendingIntent: PendingIntent?
 ) : PlayerNotificationManager.MediaDescriptionAdapter {

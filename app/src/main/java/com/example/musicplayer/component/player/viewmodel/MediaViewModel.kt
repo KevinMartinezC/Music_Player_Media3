@@ -6,10 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.example.data.service.media.PlayerEvent
-import com.example.data.service.media.SimpleMediaServiceHandler
-import com.example.data.service.media.SimpleMediaState
+import com.example.data.service.media.MediaServiceHandler
+import com.example.data.service.media.utils.MediaState
+import com.example.data.service.media.utils.PlayerEvent
 import com.example.domain.usecases.LoadSongUseCase
+import com.example.domain.usecases.StartMediaServiceUseCase
 import com.example.musicplayer.component.player.PlayerUiState
 import com.example.musicplayer.component.player.utils.MediaPlayerStatus
 import com.example.musicplayer.component.player.utils.UIEvent
@@ -25,11 +26,11 @@ private const val DEFAULT_PROGRESS_VALUE = 0L
 private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
 private const val ONE_MINUTE = 1L
 
-
 @HiltViewModel
 class MediaViewModel @Inject constructor(
-    private val simpleMediaServiceHandler: SimpleMediaServiceHandler,
+    private val mediaServiceHandler: MediaServiceHandler,
     private val loadSongUseCase: LoadSongUseCase,
+    private val startMediaServiceUseCase: StartMediaServiceUseCase
 ) : ViewModel() {
 
     private val _uiStatePlayer = MutableStateFlow(
@@ -40,7 +41,8 @@ class MediaViewModel @Inject constructor(
             progress = 0f,
             progressString = "00:00",
             onUIEvent = ::onUIEvent,
-            loadData = ::loadData
+            loadData = ::loadData,
+            startMediaService = ::startMediaService
         )
     )
 
@@ -50,19 +52,23 @@ class MediaViewModel @Inject constructor(
         collectMediaState()
     }
 
+    private fun startMediaService(){
+        startMediaServiceUseCase.execute()
+    }
+
     private fun collectMediaState() {
         viewModelScope.launch {
-            simpleMediaServiceHandler.simpleMediaState.collect { mediaState ->
+            mediaServiceHandler.mediaState.collect { mediaState ->
                 when (mediaState) {
-                    is SimpleMediaState.Buffering -> calculateProgressValues(mediaState.progress)
-                    SimpleMediaState.Initial -> _uiStatePlayer.value =
+                    is MediaState.Buffering -> calculateProgressValues(mediaState.progress)
+                    MediaState.Initial -> _uiStatePlayer.value =
                         _uiStatePlayer.value.copy(mediaPlayerStatus = MediaPlayerStatus.Initial)
 
-                    is SimpleMediaState.Playing -> _uiStatePlayer.value =
+                    is MediaState.Playing -> _uiStatePlayer.value =
                         _uiStatePlayer.value.copy(isPlaying = mediaState.isPlaying)
 
-                    is SimpleMediaState.Progress -> calculateProgressValues(mediaState.progress)
-                    is SimpleMediaState.Ready -> {
+                    is MediaState.Progress -> calculateProgressValues(mediaState.progress)
+                    is MediaState.Ready -> {
                         _uiStatePlayer.value = _uiStatePlayer.value.copy(
                             mediaPlayerStatus = MediaPlayerStatus.Ready,
                             duration = mediaState.duration
@@ -75,16 +81,16 @@ class MediaViewModel @Inject constructor(
 
     override fun onCleared() {
         viewModelScope.launch {
-            simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.Stop)
+            mediaServiceHandler.onPlayerEvent(PlayerEvent.Stop)
         }
     }
 
     private fun onUIEvent(uiEvent: UIEvent) {
         viewModelScope.launch {
             when (uiEvent) {
-                UIEvent.Backward -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.Backward)
-                UIEvent.Forward -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.Forward)
-                UIEvent.PlayPause -> simpleMediaServiceHandler.onPlayerEvent(PlayerEvent.PlayPause)
+                UIEvent.Backward -> mediaServiceHandler.onPlayerEvent(PlayerEvent.Backward)
+                UIEvent.Forward -> mediaServiceHandler.onPlayerEvent(PlayerEvent.Forward)
+                UIEvent.PlayPause -> mediaServiceHandler.onPlayerEvent(PlayerEvent.PlayPause)
             }
         }
     }
@@ -125,7 +131,7 @@ class MediaViewModel @Inject constructor(
                     )
                     .build()
 
-                simpleMediaServiceHandler.addMediaItem(mediaItem)
+                mediaServiceHandler.addMediaItem(mediaItem)
             }.onFailure { e -> Log.d("Error", "${e.message}") }
         }
     }

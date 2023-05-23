@@ -21,7 +21,6 @@ import com.example.musicplayer.component.player.utils.UIEvent
 internal fun MediaScreenPlayer(
     id: Int,
     vm: MediaViewModel = hiltViewModel(),
-    startService: () -> Unit,
 ) {
 
     val uiStatePlayer by vm.uiStatePlayer.collectAsState()
@@ -43,7 +42,7 @@ internal fun MediaScreenPlayer(
 
             is MediaPlayerStatus.Ready -> {
                 LaunchedEffect(true) {
-                    startService()
+                   uiStatePlayer.startMediaService()
                 }
                 MediaPlayerContent(
                     formatDuration = uiStatePlayer.formatDuration,

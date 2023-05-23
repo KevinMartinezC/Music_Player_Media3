@@ -13,7 +13,7 @@ import com.example.musicplayer.component.home.HomeScreen
 import com.example.musicplayer.component.player.MediaScreenPlayer
 
 @Composable
-fun BottomNavGraph(startService: () -> Unit) {
+fun BottomNavGraph() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -34,7 +34,6 @@ fun BottomNavGraph(startService: () -> Unit) {
                 navBackStackEntry.arguments?.getInt("id")?.let { id ->
                     MediaScreenPlayer(
                         id = id,
-                        startService = startService
                     )
                 }
             }

@@ -7,7 +7,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import com.example.data.service.notification.SimpleMediaNotificationManager
+import com.example.data.service.notification.MediaNotificationManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class MediaService : MediaSessionService() {
     lateinit var mediaSession: MediaSession
 
     @Inject
-    lateinit var notificationManager: SimpleMediaNotificationManager
+    lateinit var notificationManager: MediaNotificationManager
 
     @RequiresApi(Build.VERSION_CODES.O)
     @UnstableApi
