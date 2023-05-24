@@ -3,6 +3,7 @@ package com.example.data.service.notification
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -16,10 +17,6 @@ import androidx.media3.ui.PlayerNotificationManager
 import com.example.data.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
-private const val NOTIFICATION_ID = 200
-private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"
-private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaNotificationManager @Inject constructor(
@@ -37,19 +34,21 @@ class MediaNotificationManager @Inject constructor(
     @UnstableApi
     fun startNotificationService(
         mediaSessionService: MediaSessionService,
-        mediaSession: MediaSession
+        mediaSession: MediaSession,
+        pendingIntent: PendingIntent
     ) {
-        buildNotification(mediaSession)
+        buildNotification(mediaSession,pendingIntent)
         startForegroundNotification(mediaSessionService)
     }
 
     @UnstableApi
-    private fun buildNotification(mediaSession: MediaSession) {
+    private fun buildNotification(mediaSession: MediaSession, pendingIntent: PendingIntent) {
+
         PlayerNotificationManager.Builder(context, NOTIFICATION_ID, NOTIFICATION_CHANNEL_ID)
             .setMediaDescriptionAdapter(
                 MediaNotificationAdapter(
                     context = context,
-                    pendingIntent = mediaSession.sessionActivity
+                    pendingIntent = pendingIntent
                 )
             )
             .setSmallIconResourceId(R.drawable.ic_microphone)
@@ -59,6 +58,7 @@ class MediaNotificationManager @Inject constructor(
                 it.setUseFastForwardActionInCompactView(true)
                 it.setUseRewindActionInCompactView(true)
                 it.setUseNextActionInCompactView(false)
+                it.setUsePreviousActionInCompactView(false)
                 it.setPriority(NotificationCompat.PRIORITY_LOW)
                 it.setPlayer(player)
             }
@@ -79,5 +79,11 @@ class MediaNotificationManager @Inject constructor(
             NotificationManager.IMPORTANCE_LOW
         )
         notificationManager.createNotificationChannel(channel)
+    }
+
+    companion object{
+        private const val NOTIFICATION_ID = 200
+        private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"
+        private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
     }
 }

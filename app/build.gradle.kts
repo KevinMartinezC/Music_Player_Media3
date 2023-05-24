@@ -59,33 +59,24 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.2.0-alpha01")
+    implementation(platform(libs.composeBom))
+    implementation(libs.bundles.ui.compose)
+    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(platform(libs.composeBom))
+    androidTestImplementation(libs.uiTestJUnit4)
+    debugImplementation(libs.uiTooling)
+    debugImplementation(libs.uiTestManifest)
     implementation(libs.bundles.hilt)
     kapt(libs.hilt.android.compiler)
     implementation(libs.navigation.compose)
     implementation(libs.coilCompose)
     implementation(libs.bundles.paging)
-    // Media3
-    implementation("androidx.media3:media3-session:1.0.2")
-
-    // Coil
-    implementation("io.coil-kt:coil-compose:2.3.0")
-    implementation ("com.google.code.gson:gson:2.8.6")
-
-
-
-
+    implementation(libs.coilCompose)
+    implementation(libs.androidx.media3.session)
+    implementation (libs.gson)
 }
 
 kapt {

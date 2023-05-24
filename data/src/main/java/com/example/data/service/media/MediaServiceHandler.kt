@@ -48,9 +48,9 @@ class MediaServiceHandler @Inject constructor(
                     startProgressUpdate()
                 }
             }
-
             PlayerEvent.Stop -> stopProgressUpdate()
-            is PlayerEvent.UpdateProgress -> player.seekTo((player.duration * playerEvent.newProgress).toLong())
+            is PlayerEvent.UpdateProgress ->
+                player.seekTo((player.duration * playerEvent.newProgress).toLong())
         }
     }
 

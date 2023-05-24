@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.player.viewmodel
+package com.example.musicplayer.ui.component.player.viewmodel
 
 import android.net.Uri
 import android.util.Log
@@ -10,10 +10,9 @@ import com.example.data.service.media.MediaServiceHandler
 import com.example.data.service.media.utils.MediaState
 import com.example.data.service.media.utils.PlayerEvent
 import com.example.domain.usecases.LoadSongUseCase
-import com.example.domain.usecases.StartMediaServiceUseCase
-import com.example.musicplayer.component.player.PlayerUiState
-import com.example.musicplayer.component.player.utils.MediaPlayerStatus
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.PlayerUiState
+import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,16 +20,10 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private const val DURATION_FORMAT = "%02d:%02d"
-private const val DEFAULT_PROGRESS_VALUE = 0L
-private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
-private const val ONE_MINUTE = 1L
-
 @HiltViewModel
 class MediaViewModel @Inject constructor(
     private val mediaServiceHandler: MediaServiceHandler,
     private val loadSongUseCase: LoadSongUseCase,
-    private val startMediaServiceUseCase: StartMediaServiceUseCase
 ) : ViewModel() {
 
     private val _uiStatePlayer = MutableStateFlow(
@@ -40,9 +33,9 @@ class MediaViewModel @Inject constructor(
             isPlaying = false,
             progress = 0f,
             progressString = "00:00",
+            albumArtUrl = "",
             onUIEvent = ::onUIEvent,
             loadData = ::loadData,
-            startMediaService = ::startMediaService
         )
     )
 
@@ -50,10 +43,6 @@ class MediaViewModel @Inject constructor(
 
     init {
         collectMediaState()
-    }
-
-    private fun startMediaService(){
-        startMediaServiceUseCase.execute()
     }
 
     private fun collectMediaState() {
@@ -132,7 +121,16 @@ class MediaViewModel @Inject constructor(
                     .build()
 
                 mediaServiceHandler.addMediaItem(mediaItem)
+                _uiStatePlayer.value = _uiStatePlayer.value.copy(
+                    albumArtUrl = soundResult.images.waveformM
+                )
             }.onFailure { e -> Log.d("Error", "${e.message}") }
         }
+    }
+    companion object{
+        private const val DURATION_FORMAT = "%02d:%02d"
+        private const val DEFAULT_PROGRESS_VALUE = 0L
+        private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
+        private const val ONE_MINUTE = 1L
     }
 }

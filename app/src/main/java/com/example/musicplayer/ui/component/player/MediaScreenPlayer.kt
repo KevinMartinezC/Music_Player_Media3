@@ -1,7 +1,10 @@
-package com.example.musicplayer.component.player
+package com.example.musicplayer.ui.component.player
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -10,12 +13,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.musicplayer.component.player.viewmodel.MediaViewModel
+import coil.compose.rememberAsyncImagePainter
+import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel
 import com.example.musicplayer.R
-import com.example.musicplayer.component.player.utils.MediaPlayerStatus
-import com.example.musicplayer.component.player.utils.UIEvent
+import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
+import com.example.musicplayer.ui.component.player.utils.UIEvent
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 @Composable
 internal fun MediaScreenPlayer(
@@ -41,16 +50,14 @@ internal fun MediaScreenPlayer(
             )
 
             is MediaPlayerStatus.Ready -> {
-                LaunchedEffect(true) {
-                   uiStatePlayer.startMediaService()
-                }
                 MediaPlayerContent(
                     formatDuration = uiStatePlayer.formatDuration,
                     duration = uiStatePlayer.duration,
                     isPlaying = uiStatePlayer.isPlaying,
                     progress = uiStatePlayer.progress,
                     progressString = uiStatePlayer.progressString,
-                    onUIEvent = uiStatePlayer.onUIEvent
+                    onUIEvent = uiStatePlayer.onUIEvent,
+                    albumArtUrl = uiStatePlayer.albumArtUrl
                 )
             }
         }
@@ -65,14 +72,39 @@ private fun MediaPlayerContent(
     isPlaying: Boolean,
     progress: Float,
     progressString: String,
+    albumArtUrl: String,
     onUIEvent: (UIEvent) -> Unit
 ) {
 
+    val scrollState = rememberScrollState()
+
     Column(
-        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
+
+        ) {
+
+        if (LocalInspectionMode.current) {
+            Image(
+                painter = painterResource(R.drawable.image),
+                contentDescription = null,
+                modifier = Modifier
+                    .aspectRatio(4f)
+                    .align(Alignment.CenterHorizontally)
+            )
+        } else {
+            Image(
+                painter = rememberAsyncImagePainter(albumArtUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .aspectRatio(4f)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
         MediaPlayerUI(
             durationString = formatDuration(duration),
             playResourceProvider = {
@@ -80,6 +112,30 @@ private fun MediaPlayerContent(
             },
             progressProvider = { Pair(progress, progressString) },
             onUiEvent = onUIEvent,
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.height_60dp)))
+
+    }
+}
+
+@Preview
+@Composable
+fun MediaPlayerContentPreview() {
+    MusicPlayerTheme {
+        MediaPlayerContent(
+            formatDuration = { duration ->
+                String.format(
+                    "%02d:%02d",
+                    duration / 60,
+                    duration % 60
+                )
+            },
+            duration = 180L,
+            isPlaying = true,
+            progress = 0.5f,
+            progressString = "01:30",
+            albumArtUrl = stringResource(R.string.image),
+            onUIEvent = { }
         )
     }
 }

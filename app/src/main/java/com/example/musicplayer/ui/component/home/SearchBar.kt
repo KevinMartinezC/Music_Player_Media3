@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.home
+package com.example.musicplayer.ui.component.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.musicplayer.R
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -55,6 +57,15 @@ fun SearchField(
         singleLine = true,
         modifier = Modifier.fillMaxWidth()
     )
-
 }
 
+@Preview
+@Composable
+fun SearchFieldPreview() {
+    MusicPlayerTheme {
+        SearchField(
+            onSearch = {  }
+        )
+    }
+
+}
