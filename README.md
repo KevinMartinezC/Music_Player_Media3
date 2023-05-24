@@ -16,4 +16,4 @@ This repository contains the source code for My Music App, a music streaming app
 To get started, clone the repository and import the project into Android Studio.
 
 ```shell
-git clone https://github.com/username/my-music-app.git
+git clone https://github.com/KevinMartinezC/Music_Player_Media3.git
