@@ -75,6 +75,7 @@ fun ResultCard(
             }
             Text(
                 text = musicItem.name,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_16dp))
                     .aspectRatio(if (grid) TEXT_GRID_ASPECT_RATIO else TEXT_NORMAL_ASPECT_RATIO),

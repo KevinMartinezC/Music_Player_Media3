@@ -1,6 +1,7 @@
 package com.example.musicplayer.ui.component.player
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +13,7 @@ import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 
 @Composable
-internal fun PlayerBar(
+fun PlayerBar(
     progress: Float,
     durationString: String,
     progressString: String,
@@ -33,8 +34,14 @@ internal fun PlayerBar(
                 .fillMaxWidth()
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_16dp))
         ) {
-            Text(text = progressString)
-            Text(text = durationString)
+            Text(
+                text = progressString,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text(
+                text = durationString,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
