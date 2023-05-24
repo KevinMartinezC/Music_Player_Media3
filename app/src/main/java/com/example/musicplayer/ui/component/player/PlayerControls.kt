@@ -15,11 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.musicplayer.R
 import com.example.musicplayer.ui.component.player.utils.UIEvent
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 @Composable
-internal fun PlayerControls(
+fun PlayerControls(
     playResourceProvider: () -> Int,
     onUiEvent: (UIEvent) -> Unit
 ) {
@@ -53,6 +55,17 @@ internal fun PlayerControls(
                 .clickable(onClick = { onUiEvent(UIEvent.Forward) })
                 .padding(dimensionResource(id = R.dimen.padding_12dp))
                 .size(dimensionResource(id = R.dimen.size_34dp))
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PlayerControlsPreview() {
+    MusicPlayerTheme {
+        PlayerControls(
+            playResourceProvider = { android.R.drawable.ic_media_play },
+            onUiEvent = { }
         )
     }
 }

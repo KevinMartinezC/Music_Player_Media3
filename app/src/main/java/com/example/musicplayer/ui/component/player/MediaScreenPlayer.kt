@@ -13,13 +13,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel
 import com.example.musicplayer.R
 import com.example.musicplayer.ui.component.player.utils.MediaPlayerStatus
 import com.example.musicplayer.ui.component.player.utils.UIEvent
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 @Composable
 internal fun MediaScreenPlayer(
@@ -71,7 +76,7 @@ private fun MediaPlayerContent(
     onUIEvent: (UIEvent) -> Unit
 ) {
 
-val scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -81,13 +86,25 @@ val scrollState = rememberScrollState()
             .verticalScroll(scrollState),
 
         ) {
-        Image(
-            painter = rememberAsyncImagePainter(albumArtUrl),
-            contentDescription = null,
-            modifier = Modifier
-                .aspectRatio(4f)
-                .align(Alignment.CenterHorizontally)
-        )
+
+        if (LocalInspectionMode.current) {
+            Image(
+                painter = painterResource(R.drawable.image),
+                contentDescription = null,
+                modifier = Modifier
+                    .aspectRatio(4f)
+                    .align(Alignment.CenterHorizontally)
+            )
+        } else {
+            Image(
+                painter = rememberAsyncImagePainter(albumArtUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .aspectRatio(4f)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
         MediaPlayerUI(
             durationString = formatDuration(duration),
             playResourceProvider = {
@@ -98,5 +115,27 @@ val scrollState = rememberScrollState()
         )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.height_60dp)))
 
+    }
+}
+
+@Preview
+@Composable
+fun MediaPlayerContentPreview() {
+    MusicPlayerTheme {
+        MediaPlayerContent(
+            formatDuration = { duration ->
+                String.format(
+                    "%02d:%02d",
+                    duration / 60,
+                    duration % 60
+                )
+            },
+            duration = 180L,
+            isPlaying = true,
+            progress = 0.5f,
+            progressString = "01:30",
+            albumArtUrl = stringResource(R.string.image),
+            onUIEvent = { }
+        )
     }
 }

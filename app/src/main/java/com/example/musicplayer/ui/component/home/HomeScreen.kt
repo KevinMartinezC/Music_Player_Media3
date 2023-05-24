@@ -14,14 +14,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.domain.model.Images
+import com.example.domain.model.Previews
 import com.example.domain.model.SoundResult
 import com.example.musicplayer.R
 import com.example.musicplayer.ui.component.home.viewmodel.HomeScreenViewModel
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun HomeScreen(
@@ -61,6 +68,7 @@ fun HomeScreenContent(
                     CircularProgressIndicator()
                 }
             }
+
             searchResultList.itemCount == 0 -> {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -73,6 +81,7 @@ fun HomeScreenContent(
                     )
                 }
             }
+
             else -> {
                 if (isLandscape) {
                     SearchResultsGrid(results = searchResultList, navController = navController)
@@ -87,3 +96,28 @@ fun HomeScreenContent(
 }
 
 
+@Preview
+@Composable
+fun HomeScreenContentLoadingPreview() {
+    val fakeResults = flowOf(
+        PagingData.from(
+            listOf(
+                SoundResult(
+                    id = 1,
+                    name = stringResource(R.string.name),
+                    username = stringResource(R.string.user_name),
+                    previews = Previews(previewHqMp3 = stringResource(R.string.music_mp3)),
+                    images = Images(waveformM = stringResource(R.string.image))
+                )
+            )
+        )
+    ).collectAsLazyPagingItems()
+    val navController = rememberNavController()
+    MusicPlayerTheme {
+        HomeScreenContent(
+            search = {},
+            searchResultList = fakeResults,
+            navController = navController
+        )
+    }
+}
