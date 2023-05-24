@@ -14,6 +14,9 @@ class GetSoundInfRepositoryImpl @Inject constructor(
         page: Int,
         pageSize: Int
     ): List<SoundResult> {
+        if (query.isEmpty()) {
+            return emptyList()
+        }
         val apiResponse = apiService.search(query, page.toString(), pageSize.toString())
         return apiResponse.results.map { it.toSoundResult() }
     }

@@ -1,11 +1,14 @@
-package com.example.musicplayer.component.navigation
+package com.example.musicplayer.ui.component.navigation
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.musicplayer.ui.theme.MusicPlayerTheme
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -15,9 +18,9 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    NavigationBar (
+    NavigationBar(
         containerColor = MaterialTheme.colorScheme.primary
-    ){
+    ) {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -25,5 +28,14 @@ fun BottomBar(navController: NavHostController) {
                 navController = navController
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun BottomBarPreview() {
+    val navController = rememberNavController()
+    MusicPlayerTheme {
+        BottomBar(navController = navController)
     }
 }

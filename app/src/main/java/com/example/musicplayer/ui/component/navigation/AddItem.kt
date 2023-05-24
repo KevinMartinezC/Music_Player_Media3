@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.navigation
+package com.example.musicplayer.ui.component.navigation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
@@ -27,7 +27,7 @@ fun RowScope.AddItem(
             Icon(
                 imageVector = screen.icon,
                 contentDescription = stringResource(R.string.navigation_icon),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onPrimary
 
             )
         },

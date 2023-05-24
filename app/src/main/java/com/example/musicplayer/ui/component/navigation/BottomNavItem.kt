@@ -1,4 +1,4 @@
-package com.example.musicplayer.component.navigation
+package com.example.musicplayer.ui.component.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

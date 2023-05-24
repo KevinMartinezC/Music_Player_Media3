@@ -7,4 +7,9 @@
     <string name="backward_button">Backward Button</string>
     <string name="play_pause_button">Play/Pause Button</string>
     <string name="forward_button">Forward Button</string>
+    <string name="no_results_found">No Results Found</string>
+    <string name="music_mp3">https://cdn.freesound.org/previews/680/680316_10399452-hq.mp3</string>
+    <string name="image">https://cdn.freesound.org/displays/680/680316_10399452_wave_M.png</string>
+    <string name="name">Mallets on piano 114bpm.wav</string>
+    <string name="user_name">tur.kis</string>
 </resources>

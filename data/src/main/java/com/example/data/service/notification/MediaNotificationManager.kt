@@ -18,10 +18,6 @@ import com.example.data.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-private const val NOTIFICATION_ID = 200
-private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"
-private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
-
 @RequiresApi(Build.VERSION_CODES.O)
 class MediaNotificationManager @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -62,6 +58,7 @@ class MediaNotificationManager @Inject constructor(
                 it.setUseFastForwardActionInCompactView(true)
                 it.setUseRewindActionInCompactView(true)
                 it.setUseNextActionInCompactView(false)
+                it.setUsePreviousActionInCompactView(false)
                 it.setPriority(NotificationCompat.PRIORITY_LOW)
                 it.setPlayer(player)
             }
@@ -82,5 +79,11 @@ class MediaNotificationManager @Inject constructor(
             NotificationManager.IMPORTANCE_LOW
         )
         notificationManager.createNotificationChannel(channel)
+    }
+
+    companion object{
+        private const val NOTIFICATION_ID = 200
+        private const val NOTIFICATION_CHANNEL_NAME = "notification channel 1"
+        private const val NOTIFICATION_CHANNEL_ID = "notification channel id 1"
     }
 }
