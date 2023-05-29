@@ -24,6 +24,11 @@ pagingCompose = "1.0.0-alpha19"
 pagingRuntime = "3.1.1"
 compose = "1.4.3"
 composeBom = "2023.03.00"
+leakcanaryAndroid = "2.11"
+mockk = "1.13.5"
+kotlinxCoroutinesCore = "1.7.1"
+coreTesting = "2.2.0"
+
 
 [libraries]
 uiTestJUnit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
@@ -62,6 +67,10 @@ paging-guava = { module = "androidx.paging:paging-guava", version.ref = "pagingR
 paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 paging-rxjava2 = { module = "androidx.paging:paging-rxjava2", version.ref = "pagingRuntime" }
 paging-rxjava3 = { module = "androidx.paging:paging-rxjava3", version.ref = "pagingRuntime" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesCore" }
+core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 
 
 [plugins]

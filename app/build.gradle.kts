@@ -77,6 +77,10 @@ dependencies {
     implementation(libs.coilCompose)
     implementation(libs.androidx.media3.session)
     implementation (libs.gson)
+    debugImplementation(libs.leakcanary.android)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.core.testing)
 }
 
 kapt {

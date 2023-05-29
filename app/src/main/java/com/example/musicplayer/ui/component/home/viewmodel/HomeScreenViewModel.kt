@@ -1,5 +1,6 @@
 package com.example.musicplayer.ui.component.home.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -14,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
@@ -28,6 +30,7 @@ class HomeScreenViewModel @Inject constructor(
     private val _query = MutableStateFlow("")
     private val _uiStateHome = MutableStateFlow(HomeUiState(search = this::search))
 
+    val query: StateFlow<String> get() = _query.asStateFlow()
     val uiStateHome = _uiStateHome.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,7 +41,8 @@ class HomeScreenViewModel @Inject constructor(
         ).flow
     }.cachedIn(viewModelScope)
 
-    private fun search(query: String) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    fun search(query: String) {
         _query.value = query
     }
 }
