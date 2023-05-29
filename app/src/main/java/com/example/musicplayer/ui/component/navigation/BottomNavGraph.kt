@@ -24,7 +24,11 @@ fun BottomNavGraph() {
             startDestination = BottomNavItem.Home.route
         ) {
             composable(route = BottomNavItem.Home.route) {
-                HomeScreen(modifier = Modifier.padding(innerPadding), navController = navController)
+                HomeScreen(
+                    onItemSelected = { id ->
+                        navController.navigate("detail/$id")
+                    },
+                    modifier = Modifier.padding(innerPadding))
             }
             composable(
                 route = "detail/{id}",
