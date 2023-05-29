@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -21,21 +19,21 @@ import kotlinx.coroutines.flow.flowOf
 private const val GRID_CELLS_SIZE = 4
 
 @Composable
-fun SearchResultsGrid(results: LazyPagingItems<SoundResult>, navController: NavHostController) {
+fun SearchResultsGrid(results: LazyPagingItems<SoundResult>,onItemSelected: (Int) -> Unit) {
     LazyVerticalGrid(columns = GridCells.Fixed(GRID_CELLS_SIZE)) {
         items(results.itemCount) { index ->
             val animeItem = results[index] ?: return@items
-            ResultCard(musicItem = animeItem, grid = true, navController = navController)
+            ResultCard(musicItem = animeItem, grid = true,onItemSelected = onItemSelected )
         }
     }
 }
 
 @Composable
-fun SearchResultsColumn(results: LazyPagingItems<SoundResult>, navController: NavHostController) {
+fun SearchResultsColumn(results: LazyPagingItems<SoundResult>,onItemSelected: (Int) -> Unit ) {
     LazyColumn {
         items(results.itemCount) { result ->
             val animeItem = results[result] ?: return@items
-            ResultCard(musicItem = animeItem, grid = false, navController = navController)
+            ResultCard(musicItem = animeItem, grid = false,onItemSelected = onItemSelected )
         }
     }
 }
@@ -79,7 +77,7 @@ private fun SearchResultsGridPreview() {
     ).collectAsLazyPagingItems()
 
     MusicPlayerTheme {
-        SearchResultsGrid(results = fakeResults, navController = rememberNavController())
+        SearchResultsGrid(results = fakeResults, onItemSelected = {} )
     }
 }
 
@@ -100,5 +98,5 @@ private fun SearchResultsColumnPreview() {
         )
     ).collectAsLazyPagingItems()
 
-    SearchResultsColumn(results = fakeResults, navController = rememberNavController())
+    SearchResultsColumn(results = fakeResults, onItemSelected = {})
 }

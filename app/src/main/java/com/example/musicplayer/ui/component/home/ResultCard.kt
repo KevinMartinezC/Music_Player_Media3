@@ -19,8 +19,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.domain.model.Images
 import com.example.domain.model.Previews
@@ -37,7 +35,8 @@ private const val TEXT_NORMAL_ASPECT_RATIO = 5f
 fun ResultCard(
     musicItem: SoundResult,
     grid: Boolean,
-    navController: NavHostController
+    onItemSelected: (Int) -> Unit,
+
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -48,7 +47,7 @@ fun ResultCard(
         modifier = Modifier
             .padding(dimensionResource(id = R.dimen.padding_8dp))
             .clickable {
-                navController.navigate(("detail/${musicItem.id}"))
+                onItemSelected(musicItem.id)
             },
     ) {
         Column {
@@ -95,10 +94,11 @@ fun PreviewResultCard() {
         images = Images(waveformM = stringResource(R.string.image))
     )
 
-    val navController = rememberNavController()
     MusicPlayerTheme {
         ResultCard(
-            musicItem = musicItem, grid = true, navController = navController
+            musicItem = musicItem,
+            grid = true,
+            onItemSelected = {}
         )
     }
 

@@ -16,8 +16,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -34,7 +32,8 @@ import kotlinx.coroutines.flow.flowOf
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
-    navController: NavHostController
+    onItemSelected: (Int) -> Unit
+
 ) {
     val uiStateHome by homeScreenViewModel.uiStateHome.collectAsState()
     val searchResults = homeScreenViewModel.searchResults.collectAsLazyPagingItems()
@@ -43,7 +42,7 @@ fun HomeScreen(
         modifier = modifier,
         search = uiStateHome.search,
         searchResultList = searchResults,
-        navController = navController
+        onItemSelected = onItemSelected
     )
 }
 
@@ -51,7 +50,7 @@ fun HomeScreen(
 fun HomeScreenContent(
     search: (String) -> Unit,
     searchResultList: LazyPagingItems<SoundResult>,
-    navController: NavHostController,
+    onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -84,10 +83,10 @@ fun HomeScreenContent(
 
             else -> {
                 if (isLandscape) {
-                    SearchResultsGrid(results = searchResultList, navController = navController)
+                    SearchResultsGrid(results = searchResultList, onItemSelected = onItemSelected)
                 } else {
                     SearchResultsColumn(
-                        results = searchResultList, navController = navController
+                        results = searchResultList, onItemSelected = onItemSelected
                     )
                 }
             }
@@ -112,12 +111,11 @@ fun HomeScreenContentLoadingPreview() {
             )
         )
     ).collectAsLazyPagingItems()
-    val navController = rememberNavController()
     MusicPlayerTheme {
         HomeScreenContent(
             search = {},
             searchResultList = fakeResults,
-            navController = navController
+            onItemSelected = {}
         )
     }
 }
