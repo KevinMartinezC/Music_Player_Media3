@@ -1,7 +1,6 @@
 package com.example.musicplayer.ui.component.player.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -129,14 +128,14 @@ class MediaViewModel @Inject constructor(
                 _uiStatePlayer.value = _uiStatePlayer.value.copy(
                     albumArtUrl = soundResult.images.waveformM
                 )
-            }.onFailure { e -> Log.d("Error", "${e.message}") }
+            }.onFailure {  }
         }
     }
 
     companion object {
         private const val DURATION_FORMAT = "%02d:%02d"
-        private const val DEFAULT_PROGRESS_VALUE = 0L
-        private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
+         const val DEFAULT_PROGRESS_VALUE = 0L
+         const val DEFAULT_PROGRESS_PERCENTAGE = 0f
         private const val ONE_MINUTE = 1L
     }
 }

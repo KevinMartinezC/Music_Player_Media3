@@ -1,13 +1,20 @@
 package com.example.musicplayer
 
 
+import android.net.Uri
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import com.example.data.service.media.MediaServiceHandler
 import com.example.data.service.media.utils.MediaState
 import com.example.data.service.media.utils.PlayerEvent
+import com.example.domain.model.SoundResult
 import com.example.domain.usecases.LoadSongUseCase
 import com.example.musicplayer.ui.component.player.utils.UIEvent
 import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel
+import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel.Companion.DEFAULT_PROGRESS_PERCENTAGE
+import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel.Companion.DEFAULT_PROGRESS_VALUE
 import io.mockk.Runs
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
@@ -15,17 +22,35 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 
 class MediaViewModelTest {
 
-    private val mockMediaServiceHandler = mockk<MediaServiceHandler>()
-    private val mockLoadSongUseCase = mockk<LoadSongUseCase>()
+    private lateinit var mockMediaServiceHandler: MediaServiceHandler
+    private lateinit var mockLoadSongUseCase: LoadSongUseCase
+    private lateinit var viewModel: MediaViewModel
+    private lateinit var mediaStateFlow: MutableStateFlow<MediaState>
 
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
+
+    @Before
+    fun setUp() {
+        mockMediaServiceHandler = mockk(relaxed = true)
+        mockLoadSongUseCase = mockk(relaxed = true)
+        mediaStateFlow = MutableStateFlow(MediaState.Initial)
+        coEvery { mockMediaServiceHandler.mediaState } returns mediaStateFlow
+        viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
+    }
+
+    @After
+    fun tearDown() {
+        clearMocks(mockMediaServiceHandler, mockLoadSongUseCase)
+    }
 
     @Test
     fun collectMediaState_emitsMediaState_changesUiStatePlayer() = runTest {
@@ -55,7 +80,7 @@ class MediaViewModelTest {
     }
 
     @Test
-    fun onCleared_callsOnPlayerEventWithStop() = runTest{
+    fun onCleared_callsOnPlayerEventWithStop() = runTest {
 
         val mediaStateFlow = MutableStateFlow<MediaState>(MediaState.Initial)
         coEvery { mockMediaServiceHandler.mediaState } returns mediaStateFlow
@@ -115,16 +140,80 @@ class MediaViewModelTest {
 
     @Test
     fun formatDuration_formatsDurationProperly() {
-        // Arrange
         val viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
-        val durationInMilliseconds = 90000L // equals to 1 minute 30 seconds
+        val durationInMilliseconds = 90000L
 
-        // Act
         val formattedDuration = viewModel.formatDuration(durationInMilliseconds)
 
-        // Assert
         assertEquals("01:30", formattedDuration)
     }
 
+    @Test
+    fun calculateProgressValues_updatesUiStatePlayerCorrectly() = runTest {
 
+        val duration = 20000L
+        val currentProgress = 10000L
+
+        val mediaStateFlow = MutableStateFlow<MediaState>(MediaState.Ready(duration))
+        coEvery { mockMediaServiceHandler.mediaState } returns mediaStateFlow
+
+        val viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
+
+        val expectedProgress = currentProgress.toFloat() / duration
+        val expectedProgressString = viewModel.formatDuration(currentProgress)
+
+        viewModel.calculateProgressValues(currentProgress)
+
+        assertEquals(expectedProgress, viewModel.uiStatePlayer.value.progress)
+        assertEquals(expectedProgressString, viewModel.uiStatePlayer.value.progressString)
+    }
+
+    @Test
+    fun calculateProgressValues_whenProgressIsDefault_updatesUiStatePlayerWithDefaultPercentage() =
+        runTest {
+
+            val duration = 20000L
+
+            val mediaStateFlow = MutableStateFlow<MediaState>(MediaState.Ready(duration))
+            coEvery { mockMediaServiceHandler.mediaState } returns mediaStateFlow
+
+            val viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
+
+            val expectedProgress = DEFAULT_PROGRESS_PERCENTAGE
+            val expectedProgressString = viewModel.formatDuration(DEFAULT_PROGRESS_VALUE)
+
+            viewModel.calculateProgressValues(DEFAULT_PROGRESS_VALUE)
+
+            assertEquals(expectedProgress, viewModel.uiStatePlayer.value.progress)
+            assertEquals(expectedProgressString, viewModel.uiStatePlayer.value.progressString)
+        }
+
+    @Test
+    fun loadData_callsLoadSongUseCaseAndMediaServiceHandler() = runTest {
+        // Given
+        val id = 123
+        val soundResult = mockk<SoundResult>(relaxed = true)
+        val mediaItem = MediaItem.Builder()
+            .setUri(soundResult.previews.previewHqMp3)
+            .setMediaMetadata(
+                MediaMetadata.Builder()
+                    .setFolderType(MediaMetadata.FOLDER_TYPE_ALBUMS)
+                    .setArtworkUri(Uri.parse(soundResult.images.waveformM))
+                    .setAlbumTitle(soundResult.name)
+                    .setDisplayTitle(soundResult.username)
+                    .build()
+            )
+            .build()
+
+        coEvery { mockLoadSongUseCase(id) } returns soundResult
+        coEvery { mockMediaServiceHandler.addMediaItem(mediaItem) } just Runs
+
+        // When
+        viewModel.loadData(id)
+
+        // Then
+        coVerify { mockLoadSongUseCase(id) }
+        coVerify { mockMediaServiceHandler.addMediaItem(mediaItem) }
+        assertEquals(soundResult.images.waveformM, viewModel.uiStatePlayer.value.albumArtUrl)
+    }
 }
