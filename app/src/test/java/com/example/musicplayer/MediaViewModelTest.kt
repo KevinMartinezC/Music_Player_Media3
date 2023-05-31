@@ -3,9 +3,13 @@ package com.example.musicplayer
 
 import com.example.data.service.media.MediaServiceHandler
 import com.example.data.service.media.utils.MediaState
+import com.example.data.service.media.utils.PlayerEvent
 import com.example.domain.usecases.LoadSongUseCase
 import com.example.musicplayer.ui.component.player.viewmodel.MediaViewModel
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +54,20 @@ class MediaViewModelTest {
 
         // Assert
         assertEquals(duration, viewModel.uiStatePlayer.value.duration)
+    }
+
+    @Test
+    fun onCleared_callsOnPlayerEventWithStop() = runTest{
+        // Arrange
+        val mediaStateFlow = MutableStateFlow<MediaState>(MediaState.Initial)
+        coEvery { mockMediaServiceHandler.mediaState } returns mediaStateFlow
+        coEvery { mockMediaServiceHandler.onPlayerEvent(PlayerEvent.Stop) } just Runs
+
+        val viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
+
+        viewModel.onCleared()
+
+        coVerify { mockMediaServiceHandler.onPlayerEvent(PlayerEvent.Stop) }
     }
 
 }

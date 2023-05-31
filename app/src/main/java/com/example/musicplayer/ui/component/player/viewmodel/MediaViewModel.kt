@@ -69,7 +69,7 @@ class MediaViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
+    public override fun onCleared() {
         viewModelScope.launch {
             mediaServiceHandler.onPlayerEvent(PlayerEvent.Stop)
         }
