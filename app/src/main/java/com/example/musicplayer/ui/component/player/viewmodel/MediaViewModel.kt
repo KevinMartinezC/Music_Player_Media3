@@ -94,7 +94,8 @@ class MediaViewModel @Inject constructor(
         return String.format(DURATION_FORMAT, minutes, seconds)
     }
 
-    private fun calculateProgressValues(currentProgress: Long) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+     fun calculateProgressValues(currentProgress: Long) {
         val calculatedProgress =
             if (currentProgress > DEFAULT_PROGRESS_VALUE)
                 (currentProgress.toFloat() / _uiStatePlayer.value.duration)

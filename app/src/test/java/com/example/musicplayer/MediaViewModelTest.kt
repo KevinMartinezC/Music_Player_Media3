@@ -113,4 +113,18 @@ class MediaViewModelTest {
 
     }
 
+    @Test
+    fun formatDuration_formatsDurationProperly() {
+        // Arrange
+        val viewModel = MediaViewModel(mockMediaServiceHandler, mockLoadSongUseCase)
+        val durationInMilliseconds = 90000L // equals to 1 minute 30 seconds
+
+        // Act
+        val formattedDuration = viewModel.formatDuration(durationInMilliseconds)
+
+        // Assert
+        assertEquals("01:30", formattedDuration)
+    }
+
+
 }
