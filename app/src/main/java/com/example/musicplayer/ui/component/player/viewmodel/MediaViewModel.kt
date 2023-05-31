@@ -2,6 +2,7 @@ package com.example.musicplayer.ui.component.player.viewmodel
 
 import android.net.Uri
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -74,7 +75,8 @@ class MediaViewModel @Inject constructor(
         }
     }
 
-    private fun onUIEvent(uiEvent: UIEvent) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+     fun onUIEvent(uiEvent: UIEvent) {
         viewModelScope.launch {
             when (uiEvent) {
                 UIEvent.Backward -> mediaServiceHandler.onPlayerEvent(PlayerEvent.Backward)
@@ -84,7 +86,8 @@ class MediaViewModel @Inject constructor(
         }
     }
 
-    private fun formatDuration(duration: Long): String {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    fun formatDuration(duration: Long): String {
         val minutes: Long = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
         val seconds: Long = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS)
                 - minutes * TimeUnit.SECONDS.convert(ONE_MINUTE, TimeUnit.MINUTES))
@@ -104,7 +107,8 @@ class MediaViewModel @Inject constructor(
         )
     }
 
-    private fun loadData(id: Int) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+     fun loadData(id: Int) {
         viewModelScope.launch {
             runCatching {
                 val soundResult = loadSongUseCase(id)
@@ -127,7 +131,8 @@ class MediaViewModel @Inject constructor(
             }.onFailure { e -> Log.d("Error", "${e.message}") }
         }
     }
-    companion object{
+
+    companion object {
         private const val DURATION_FORMAT = "%02d:%02d"
         private const val DEFAULT_PROGRESS_VALUE = 0L
         private const val DEFAULT_PROGRESS_PERCENTAGE = 0f
