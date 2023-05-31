@@ -45,6 +45,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
+kapt {
+    correctErrorTypes = true
+}
 
 dependencies {
     implementation (project(":domain"))
@@ -62,9 +65,10 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.session)
     implementation(libs.glide)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.core.testing)
 }
 
-kapt {
-    correctErrorTypes = true
-}
+
 
