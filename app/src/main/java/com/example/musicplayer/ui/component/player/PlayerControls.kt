@@ -3,6 +3,7 @@ package com.example.musicplayer.ui.component.player
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,18 +39,24 @@ fun PlayerControls(
                 .clickable(onClick = { onUiEvent(UIEvent.Backward) })
                 .padding(dimensionResource(id = R.dimen.padding_12dp))
                 .size(dimensionResource(id = R.dimen.size_34dp))
+                .testTag("BackwardButton")
+
         )
-        Image(
-            painter = painterResource(id = playResourceProvider()),
-            contentDescription = stringResource(R.string.play_pause_button),
-            modifier = Modifier
-                .clip(CircleShape)
-                .clickable(onClick = { onUiEvent(UIEvent.PlayPause) })
-                .padding(dimensionResource(id = R.dimen.padding_8dp))
-                .size(dimensionResource(id = R.dimen.size_56dp))
-                .testTag(if (playResourceProvider() == R.drawable.ic_media_pause) "PauseIcon"
-                else "PlayIcon")
-        )
+        Box(modifier = Modifier.testTag("PlayPauseButton")) {
+            Image(
+                painter = painterResource(id = playResourceProvider()),
+                contentDescription = stringResource(R.string.play_pause_button),
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(onClick = { onUiEvent(UIEvent.PlayPause) })
+                    .padding(dimensionResource(id = R.dimen.padding_8dp))
+                    .size(dimensionResource(id = R.dimen.size_56dp))
+                    .testTag(
+                        if (playResourceProvider() == R.drawable.ic_media_pause) "PauseIcon"
+                        else "PlayIcon"
+                    )
+            )
+        }
         Icon(
             painter = painterResource(android.R.drawable.ic_media_ff),
             contentDescription = stringResource(R.string.forward_button),
@@ -58,6 +65,7 @@ fun PlayerControls(
                 .clickable(onClick = { onUiEvent(UIEvent.Forward) })
                 .padding(dimensionResource(id = R.dimen.padding_12dp))
                 .size(dimensionResource(id = R.dimen.size_34dp))
+                .testTag("ForwardButton")
         )
     }
 }

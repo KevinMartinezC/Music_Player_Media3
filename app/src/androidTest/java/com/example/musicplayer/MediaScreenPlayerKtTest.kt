@@ -4,8 +4,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.musicplayer.ui.component.player.MediaPlayerContent
+import com.example.musicplayer.ui.component.player.utils.UIEvent
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -115,5 +117,37 @@ class MediaScreenPlayerKtTest {
 
         composeTestRule.onNodeWithTag("AlbumArtImage").assertExists()
     }
+
+    @Test
+    fun mediaPlayerContent_calls_onUIEvent_when_controls_clicked() {
+        // Set up a mock onUIEvent function
+        var uiEvent: UIEvent? = null
+        val onUIEvent: (UIEvent) -> Unit = { event -> uiEvent = event }
+
+        composeTestRule.setContent {
+            MediaPlayerContent(
+                formatDuration = { "" },
+                duration = 0L,
+                isPlaying = true,
+                progress = 0f,
+                progressString = "",
+                albumArtUrl = "",
+                onUIEvent = onUIEvent
+            )
+        }
+
+        // Click the play/pause button and assert that the correct UIEvent is triggered
+        composeTestRule.onNodeWithTag("PlayPauseButton").performClick()
+        assertEquals(UIEvent.PlayPause, uiEvent)
+
+        // Click the forward button and assert that the correct UIEvent is triggered
+        composeTestRule.onNodeWithTag("ForwardButton").performClick()
+        assertEquals(UIEvent.Forward, uiEvent)
+
+        // Click the backward button and assert that the correct UIEvent is triggered
+        composeTestRule.onNodeWithTag("BackwardButton").performClick()
+        assertEquals(UIEvent.Backward, uiEvent)
+    }
+
 
 }
