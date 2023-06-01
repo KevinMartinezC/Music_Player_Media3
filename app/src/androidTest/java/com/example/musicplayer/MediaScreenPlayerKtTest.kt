@@ -41,4 +41,37 @@ class MediaScreenPlayerKtTest{
         composeTestRule.onNodeWithTag("durationText").assertTextEquals("02:00")
     }
 
+    @Test
+    fun mediaPlayerContent_displays_correct_pause_icon_when_playing() {
+        composeTestRule.setContent {
+            MediaPlayerContent(
+                formatDuration = { "" },
+                duration = 0L,
+                isPlaying = true,
+                progress = 0f,
+                progressString = "",
+                albumArtUrl = "",
+                onUIEvent = {  }
+            )
+        }
+
+        composeTestRule.onNodeWithTag("PauseIcon").assertExists()
+    }
+
+    @Test
+    fun mediaPlayerContent_displays_correct_play_icon_when_paused() {
+        composeTestRule.setContent {
+            MediaPlayerContent(
+                formatDuration = { "" },
+                duration = 0L,
+                isPlaying = false,
+                progress = 0f,
+                progressString = "",
+                albumArtUrl = "",
+                onUIEvent = {  }
+            )
+        }
+
+        composeTestRule.onNodeWithTag("PlayIcon").assertExists()
+    }
 }

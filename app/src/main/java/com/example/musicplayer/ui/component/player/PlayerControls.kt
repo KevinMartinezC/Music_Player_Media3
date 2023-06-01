@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,8 @@ fun PlayerControls(
                 .clickable(onClick = { onUiEvent(UIEvent.PlayPause) })
                 .padding(dimensionResource(id = R.dimen.padding_8dp))
                 .size(dimensionResource(id = R.dimen.size_56dp))
+                .testTag(if (playResourceProvider() == R.drawable.ic_media_pause) "PauseIcon"
+                else "PlayIcon")
         )
         Icon(
             painter = painterResource(android.R.drawable.ic_media_ff),
