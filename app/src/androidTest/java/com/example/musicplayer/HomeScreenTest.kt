@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import androidx.paging.PagingData
@@ -12,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.domain.model.Images
 import com.example.domain.model.Previews
 import com.example.domain.model.SoundResult
+import com.example.musicplayer.ui.component.home.ResultCard
 import com.example.musicplayer.ui.component.home.SearchField
 import com.example.musicplayer.ui.component.home.SearchResultsColumn
 import com.example.musicplayer.ui.component.home.SearchResultsGrid
@@ -71,7 +73,7 @@ class HomeScreenTest {
 
         composeTestRule.setContent {
             val soundResultItems = soundResults.collectAsLazyPagingItems()
-            SearchResultsGrid(soundResultItems) {  }
+            SearchResultsGrid(soundResultItems) { }
         }
         composeTestRule.onNodeWithText("Guitar Space").assertExists()
         composeTestRule.onNodeWithText("Guitar solo.wav").assertExists()
@@ -108,4 +110,30 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText("Guitar solo.wav").assertExists()
     }
 
+    @Test
+    fun testItemClickInteraction() {
+        val testResult = SoundResult(
+            id = 123,
+            name = "Guitar Space",
+            username = "Test Username",
+            previews = Previews("Test"),
+            images = Images("Test Waveform")
+        )
+        val results = flowOf(
+            PagingData.from(
+                listOf(
+                    testResult
+                )
+            )
+        )
+
+        var selectedItem: Int? = null
+        composeTestRule.setContent {
+            ResultCard(musicItem = testResult, grid = false) { selectedItem = it }
+        }
+
+        composeTestRule.onNodeWithTag("resultCard_${testResult.id}").performClick()
+
+        assertEquals(testResult.id, selectedItem)
+    }
 }

@@ -49,7 +49,8 @@ fun ResultCard(
             .padding(dimensionResource(id = R.dimen.padding_8dp))
             .clickable {
                 onItemSelected(musicItem.id)
-            },
+            }
+            .testTag("resultCard_${musicItem.id}"),
     ) {
         Column {
             if (LocalInspectionMode.current) {
