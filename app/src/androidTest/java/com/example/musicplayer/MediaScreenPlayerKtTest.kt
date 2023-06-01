@@ -96,4 +96,24 @@ class MediaScreenPlayerKtTest {
 
         composeTestRule.onNodeWithTag("progressText").assertTextEquals("$testProgress")
     }
+
+    @Test
+    fun mediaPlayerContent_displays_album_art() {
+        val testUrl = "https://example.com/test.jpg"
+
+        composeTestRule.setContent {
+            MediaPlayerContent(
+                formatDuration = { "" },
+                duration = 0L,
+                isPlaying = true,
+                progress = 0f,
+                progressString = "",
+                albumArtUrl = testUrl,
+                onUIEvent = { }
+            )
+        }
+
+        composeTestRule.onNodeWithTag("AlbumArtImage").assertExists()
+    }
+
 }

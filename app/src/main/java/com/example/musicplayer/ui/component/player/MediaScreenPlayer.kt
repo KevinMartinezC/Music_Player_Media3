@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -102,6 +103,7 @@ internal fun MediaScreenPlayer(
                 modifier = Modifier
                     .aspectRatio(4f)
                     .align(Alignment.CenterHorizontally)
+                    .testTag("AlbumArtImage")
             )
         }
 
