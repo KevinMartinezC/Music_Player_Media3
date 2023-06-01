@@ -66,7 +66,7 @@ internal fun MediaScreenPlayer(
 }
 
 @Composable
-private fun MediaPlayerContent(
+ fun MediaPlayerContent(
     formatDuration: (Long) -> String,
     duration: Long,
     isPlaying: Boolean,
