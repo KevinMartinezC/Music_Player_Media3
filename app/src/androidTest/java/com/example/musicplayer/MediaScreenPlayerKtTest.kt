@@ -11,8 +11,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
+
 @RunWith(AndroidJUnit4::class)
-class MediaScreenPlayerKtTest{
+class MediaScreenPlayerKtTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -22,7 +23,8 @@ class MediaScreenPlayerKtTest{
         val testDuration = 120000L
         val testFormatDuration: (Long) -> String = { millis ->
             val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes)
+            val seconds =
+                TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes)
             String.format("%02d:%02d", minutes, seconds)
         }
 
@@ -51,7 +53,7 @@ class MediaScreenPlayerKtTest{
                 progress = 0f,
                 progressString = "",
                 albumArtUrl = "",
-                onUIEvent = {  }
+                onUIEvent = { }
             )
         }
 
@@ -68,10 +70,30 @@ class MediaScreenPlayerKtTest{
                 progress = 0f,
                 progressString = "",
                 albumArtUrl = "",
-                onUIEvent = {  }
+                onUIEvent = { }
             )
         }
 
         composeTestRule.onNodeWithTag("PlayIcon").assertExists()
+    }
+
+    @Test
+    fun mediaPlayerContent_displays_correct_progress() {
+
+        val testProgress = 0.5f
+
+        composeTestRule.setContent {
+            MediaPlayerContent(
+                formatDuration = { "" },
+                duration = 0L,
+                isPlaying = true,
+                progress = testProgress,
+                progressString = "$testProgress",
+                albumArtUrl = "",
+                onUIEvent = { }
+            )
+        }
+
+        composeTestRule.onNodeWithTag("progressText").assertTextEquals("$testProgress")
     }
 }

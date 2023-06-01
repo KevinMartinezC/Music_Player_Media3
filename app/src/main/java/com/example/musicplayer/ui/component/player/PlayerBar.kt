@@ -28,6 +28,7 @@ fun PlayerBar(
             onValueChange = {},
             modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.padding_8dp))
+                .testTag("ProgressBar")
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -38,6 +39,7 @@ fun PlayerBar(
             Text(
                 text = progressString,
                 style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("progressText")
             )
             Text(
                 text = durationString,
