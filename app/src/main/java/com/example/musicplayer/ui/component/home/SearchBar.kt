@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,7 +48,7 @@ fun SearchField(
                     onSearch(searchQuery.value)
                     keyBoardController?.hide()
                 }
-            }) {
+            }, modifier = Modifier.testTag("searchButton")) {
                 Icon(
                     Icons.Default.Search,
                     contentDescription = stringResource(R.string.search_icon)
@@ -56,6 +57,8 @@ fun SearchField(
         },
         singleLine = true,
         modifier = Modifier.fillMaxWidth()
+            .testTag("searchField")
+
     )
 }
 
