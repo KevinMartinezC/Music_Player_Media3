@@ -83,6 +83,7 @@ dependencies {
     debugImplementation(libs.leakcanary.android)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.core.testing)
     implementation ("androidx.tracing:tracing:1.1.0")
 
 }
